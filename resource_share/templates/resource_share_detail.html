@@ -1,34 +1,69 @@
  {% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> 
+<style>
+    .btn-choosefile {
+    text-decoration: none;
+    color: #000;
+    background-color: #fff;
+    text-align: center;
+    letter-spacing: .5px;
+    transition: background-color .2s ease-out;
+    cursor: pointer;
+    font-size: 14px;
+    outline: 0;
+    border: none;
+    /* border-radius: 2px; */
+    display: inline-block;
+    height: 44px;
+    line-height: 36px;
+    padding: 2px 4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    /* box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%); */
+}
+</style>
+{% endblock extra_head %} {% block card_content %}
 <div id="rsdetail" class="card-content">
-    <label style="font-size: 25px;">课程名 共享资源</label>
+    <label style="font-size: 25px;">{{course_name}} 共享资源</label>
     <p></p>
     <div>
-        <form action="{%url 'up'%}" enctype="multipart/form-data" method="POST">
-            <input type="file" name="myfile">
-            <input type="submit" value="submit"> {%csrf_token%}
-        </form>
 
-        <form action="{%url 'new'%}" method="POST">
-            {%csrf_token%}
-            <input type="text" name="newfolder" style="width: 50%;" required>
-            <input type="submit" value="新建文件夹" class="btn btn-default btn-sm" type="button" style="margin-right: 5px; ">
-        </form>
+        <br/>
 
-        <form action="{%url 'return_previous_level'%}" method="POST">
-            {% csrf_token %}
-            <button title="返回上一级目录" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
-                 返回上一级目录
-             </button>
+        <table>
+            <form action="{%url 'return_previous_level'%}" method="POST">
+                {% csrf_token %}
+                <button title="返回上一级目录" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
+                     返回上一级目录
+                </button>
+            </form>
+        
+        
+        
+            <form action="{%url 'return_share_index'%}" method="POST">
+                {% csrf_token %}
+                <button title="返回课程列表" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
+                     返回课程列表
+                 </button>
+            </form>
+            
+                <form action="{%url 'new'%}" method="POST">
+                    {%csrf_token%}
+                    <input type="submit" value="新建文件夹" class="btn btn-default btn-sm" type="button" style="margin-right: 5px; float: right;">
+                    <input type="text" placeholder="请输入文件夹名" name="newfolder" style="width: 30%;float: right;" required>
+                </form>
+            
+            
+            
+                
+            
+        </table>
+        <table>
+        <form action="{%url 'up'%}"  enctype="multipart/form-data" method="POST">
+            <input type="file"   class="btn-choosefile"   name="myfile">
+            <input type="submit" class="btn btn-default btn-sm" value="上传"> {%csrf_token%}
         </form>
-
-        <form action="{%url 'return_share_index'%}" method="POST">
-            {% csrf_token %}
-            <button title="返回课程列表" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
-                 返回课程列表
-             </button>
-        </form>
-
         <form action="{%url 'search'%}" method="POST">
             {%csrf_token%}
             <span style="float:right">
@@ -38,7 +73,7 @@
                 <input type="text" name="搜" placeholder="搜索文件" class="file_search_input" size=20>
             </span>
         </form>
-
+    </table>
     </div>
 
 
@@ -75,7 +110,7 @@
                 <td>
                     <form action="{%url 'rename'%}" method="POST">
                         {%csrf_token%}
-                        <input type="text" name="这种名字" style="width: 75%;" required>
+                        <input type="text" name="这种名字" style="width: 60%;" required>
                         <input type="submit" name="{{item.id}}" value="重命名" class="operation-btn">
                     </form>
                 </td>
@@ -95,7 +130,7 @@
                 <td>
                     <form action="{%url 'rename'%}" method="POST">
                         {%csrf_token%}
-                        <input type="text" name="这种名字" style="width: 75%;" required>
+                        <input type="text" name="这种名字" style="width: 60%;" required>
                         <!-- <a href="">重命名</a> -->
                         <input type="submit" name="{{file.id}}" value="重命名" class="operation-btn">
                     </form>
