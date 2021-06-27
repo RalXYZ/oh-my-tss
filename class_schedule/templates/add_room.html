@@ -68,23 +68,11 @@ function check(){
                             <option value="{{ j.id }}">{{ j.name }}</option>
                       {% endfor %}
                   {% endif %}
-{#                  <option value="西一">西一</option>#}
-{#                  <option value="西二">西二</option>#}
-{#                  <option value="西三">西三</option>#}
-{#                  <option value="东一">东一</option>#}
-{#                  <option value="东二">东二</option>#}
-{#                  <option value="东三">东三</option>#}
-{#                  <option value="东四">东四</option>#}
-{#                  <option value="东五">东五</option>#}
-{#                  <option value="东六">东六</option>#}
-{#                  <option value="紫金港机房">紫金港机房</option>#}
-{#                  <option value="东操场">东操场</option>#}
-{#                  <option value="风雨操场">风雨操场</option>#}
               </select>
           </div>
           <br>
           <label for="room_id">门牌号：</label>
-          <input type="number" placeholder="请输入完整门牌号" name="room_id" id="room_id" required maxlength="10">
+          <input type="number" placeholder="请输入完整门牌号" name="room_id" id="room_id" required maxlength="10" min="1">
           <br><br>
           <div>
               <label for="room_type">教室类型：</label>
@@ -96,7 +84,7 @@ function check(){
           </div>
           <br>
           <label for="room_capacity">教室容量（座位数量）：</label>
-          <input type="number" placeholder="请输入教室容量" name="room_capacity" id="room_capacity" min="0" required maxlength="5">
+          <input type="number" placeholder="请输入教室容量" name="room_capacity" id="room_capacity" min="1" required maxlength="5">
           <button class="w-100 btn btn-lg btn-primary" type="submit">提交</button>
       </form>
 <div class="operation-btn"></div>

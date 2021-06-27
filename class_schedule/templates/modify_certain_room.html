@@ -75,7 +75,7 @@
           </div>
           <br>
           门牌号：<!--{{ original_info.room_number }}-->
-          <input maxlength="10" type="number" placeholder="请输入完整门牌号" name="room_number" id="room_number" value="{{ original_info.room_number }}" required>
+          <input maxlength="10" type="number" min="1" placeholder="请输入完整门牌号" name="room_number" id="room_number" value="{{ original_info.room_number }}" required>
           教室类型：<!--{{ original_info.room_type }}-->
           <br><br>
           <div>
@@ -99,7 +99,7 @@
           </div>
           <br>
           教室容量：<!--{{ original_info.capacity }}-->
-          <input maxlength="5" type="number" placeholder="请输入新的教室容量" name="room_capacity" id="capacity" min="1" value="{{ original_info.capacity }}">
+          <input maxlength="5" required type="number" placeholder="请输入新的教室容量" name="room_capacity" id="capacity" min="1" value="{{ original_info.capacity }}">
           <button class="w-100 btn btn-lg btn-primary" type="submit">修改教室</button>
           <a class="w-100 btn btn-lg btn-primary" href="{% url 'modify_certain_room' original_info.id %}">重置输入</a>
           <!-- 提交之后，数据库中内容进行修改，同时跳转回modify_room.html -->

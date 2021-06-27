@@ -143,8 +143,16 @@ def admin_class(req):  # 管理员选退课
         elif req.POST.get("option") == 'Out':
             try:
                 delete_check = models.StuHasClass.objects.get(Student=students, Class=classes)
-            except models.StuHasClass.DoesNotExist:
-                pass
+            except Exception:
+                delete_unable = True
+                return render(req, 'admin_class.html', {
+                    'web_title': '手动选课',
+                    'page_title': '手动选课',
+                    'request_user': req.user,
+                    'request_class': classes,
+                    'pre_capacity': capacity,
+                    'delete_check': delete_unable,
+                })
             else:
                 if delete_check == 0:
                     delete_unable = True
@@ -411,7 +419,7 @@ def stu_select(req, null=None):
     identity = 1
     current_user_group = req.user.groups.first()
     if not current_user_group or current_user_group.name != 'student':
-        identity = 0  # This user can not use this function
+        identity = -1  # This user can not use this function
         return render(req, 'stu_select.html', {
             'web_title': '课程选择',
             'page_title': '课程选择',

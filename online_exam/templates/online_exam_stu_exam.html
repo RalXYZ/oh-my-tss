@@ -92,29 +92,56 @@
             border: #3d443d;
         }
     </style>
+    <body>
+    <div id="timer" style="color:red"></div>
+    </body>
+    <script type="text/javascript">
+        var oBox= document.getElementById('timer');
+        {#var maxtime = 6 * 60;#}
+        {#maxtime用于设置时间#}
+        var maxtime = {{ seconds }};
+        function CountDown() {
+            if (maxtime >= 0) {
+                minutes = Math.floor(maxtime / 60);
+                seconds = Math.floor(maxtime % 60);
+                msg = "距离结束还有" + minutes + "分" + seconds + "秒";
+                oBox.innerHTML = msg;
+                if (maxtime == 5 * 60)alert("还剩5分钟");
+                --maxtime;
+            } else{
+                clearInterval(timer);
+                alert("时间到，结束!");
+                var e = document.createEvent("MouseEvents");
+                e.initEvent("click", true, true);
+                document.getElementById("sub").dispatchEvent(e);
+            }
+        }
+        timer = setInterval("CountDown()", 1000);
+    </script>
+
     <div id="block1">
         <!--<button onclick="" class="button1">添加题目</button>
         <button onclick="window.location.href='main'" class="button2">返回</button>-->
         <br>
         <form method="post" action = "./calGrade">
-        {% csrf_token %}
-        {% for test in list %}
-        <p>共{{ test.6 }}题</p>
-    <input hidden name = "num" value = "{{ test.6 }}">
-            <input hidden name = "testid" value="{{ test.0 }}">
+            {% csrf_token %}
+            {% for test in list %}
+                <p>共{{ test.6 }}题</p>
+                <input hidden name = "num" value = "{{ test.6 }}">
+                <input hidden name = "testid" value="{{ test.0 }}">
+                <br>
+                <p>开始时间：{{ test.1 }}</p>
+                <br>
+                <p>结束时间：{{ test.2 }}</p>
+            {% endfor %}
             <br>
-        <p>开始时间：{{ test.1 }}</p>
-            <br>
-            <p>结束时间：{{ test.2 }}</p>
-        {% endfor %}
-        <br>
-        {% for question in list1 %}
-        <p>第{{ forloop.counter }}题</p>
-        <p> ({{ question.1 }}分) </p>
-        <p> {{ question.0 }}</p>
-        <input type = "text" name = "{{ forloop.counter }}" value =" ">
-    {% endfor %}
-    <input type = "submit" name = "sub" value ="交卷">
-           </form>
+            {% for question in list1 %}
+                <p>第{{ forloop.counter }}题</p>
+                <p> ({{ question.1 }}分) </p>
+                <p> {{ question.0 }}</p>
+                <input type = "text" name = "{{ forloop.counter }}" value =" ">
+            {% endfor %}
+            <input id = "sub" type = "submit" name = "sub" value ="交卷">
+        </form>
     </div>
 {% endblock card_content %}

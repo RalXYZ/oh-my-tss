@@ -9,7 +9,7 @@
 {% block card_content %}
 <script>
 function check_auth(){
-    {% if identity == 0 %}
+    {% if identity == -1 %}
         window.alert('只有学生可以参与选课！');
         window.history.back(-1);
     {% endif %}
@@ -17,8 +17,11 @@ function check_auth(){
         window.alert('现在不在选课时间内！');
         window.history.back(-1);
     {% endif %}
+
 }
+check_auth()
 </script>
+
 <script>
 function check(){
     {% if space_out %}

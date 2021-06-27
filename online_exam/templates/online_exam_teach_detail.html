@@ -33,43 +33,22 @@
             margin-bottom: 10px;
         }
         .col_1{
-            width: 17%;
+            width: 180px;
         }
         .col_2{
-            width: 15%;
+            width: 180px;
         }
         .col_3{
-            width: 15%;
+            width: 180px;
         }
         .col_4 {
-            whdth: 15%;
+            whdth: 180px;
         }
         .col_5{
-            whdth: 15%;
+            whdth: 180px;
         }
-        .col_6{
-            whdth: 15%;
-        }
-        .col_7{
-            whdth: 15%;
-        }
-
-
-        .mylabel{
-            font-size: 10px;
-            color: #3d443d;
-            background-color: lightgreen;
-            border-radius: 5px;
-        }
-        .mybutton{
-            width: 60px;
-            text-align: center;
-            height: 30px;
-            background-color: #3399ff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.3em;
+        .col_6 {
+            whdth: 180px;
         }
         .mybutton2{
             width: 60px;
@@ -84,45 +63,23 @@
         #block1{
             display: block;
         }
-        #mheader1{
-            font-size: 30px;
-            color: black;
-            background-color: white;
-            width: 200px;
-            border: #3d443d;
-        }
     </style>
     <div id="block1">
-        <div id="online_exam">
-            <button onclick="window.location.href='../'" id="mheader1">进入题库</button>
-            <button onclick="window.location.href='../generate_paper'" id="mheader1">生成试卷</button>
-            <button onclick="window.location.href='../release_test'" id="mheader1">发布测试</button>
-            <button id="mheader1" style="background-color: #3399ff; border-radius: 5px">考试信息</button>
-            <button onclick="window.location.href='../paper_ana'" id="mheader1">试卷分析</button>
-            <br />
-        </div>
-        <hr size="10px"/>
-        <!--<button onclick="" class="button1">添加题目</button>
-        <button onclick="window.location.href='main'" class="button2">返回</button>-->
         <table class="mytable">
             <tr>
                 <th class="col_1" style="font-size: 20px">Exam</th>
                 <th class="col_2" style="font-size: 20px">Start</th>
                 <th class="col_3" style="font-size: 20px">End</th>
-                <th class="col_4" style="font-size: 20px">State</th>
-                <th class="col_5" style="font-size: 20px">Course</th>
-                <th class="col_6" style="font-size: 20px">Stu Num</th>
-                <th class="col_7"></th>
+                <th class="col_4" style="font-size: 20px">Course</th>
+                <th class="col_5" style="font-size: 20px">Stu Num</th>
             </tr>
             {% for test in list %}
             <tr>
                 <td class="col_1">{{ test.0 }}</td>
                 <td class="col_2">{{ test.1 }}</td>
                 <td class="col_3">{{ test.2 }}</td>
-                <td class="col_4"><button onclick="window.location.href='../stu_analysis?paperID={{ test.5 }}'" class="mybutton2">Analyse</button></td>
                 <td class="col_5">{{ test.3 }}</td>
                 <td class="col_6">{{ test.4 }}</td>
-                <td><button onclick="window.location.href='../teach_detail?test_id={{ test.0 }}'" class="mybutton">Detail</button></td>
             </tr>
             {% endfor %}
             {% for question in list1 %}

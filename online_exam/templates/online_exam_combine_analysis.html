@@ -6,53 +6,17 @@
 {% endblock extracss %}
 {% block card_content %}
     <style type="text/css">
-        .button1{
-            float: left;
-            color: black;
-            width: 80px;
-            text-align: center;
-            height: 50px;
-            background-color: #3399ff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.1em;
-            margin-bottom: 10px;
-        }
-        .button2{
-            float: right;
-            color: black;
-            width: 80px;
-            text-align: center;
-            height: 50px;
-            background-color: red;
-            border: none;
-            border-radius: 5px;
-            padding: 0.1em;
-            margin-bottom: 10px;
-        }
         .col_1{
-            width: 20%;
+            width: 200px;
         }
         .col_2{
-            width: 20%;
+            width: 200px;
         }
         .col_3{
-            width: 20%;
+            width: 200px;
         }
-        .col_4{
-            width: 20%;
-        }
-        .col_5{
-            width: 70%;
-        }
-        .col_6{
-            width: 30%;
-        }
-        .mylabel{
-            font-size: 10px;
-            color: #3d443d;
-            background-color: lightgreen;
-            border-radius: 5px;
+        .col_4 {
+            width: 200px;
         }
         .mybutton{
             width: 60px;
@@ -64,47 +28,16 @@
             border-radius: 5px;
             padding: 0.3em;
         }
-        .mybutton2{
-            width: 60px;
-            text-align: center;
-            height: 30px;
-            background-color: red;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.3em;
-        }
-        #block1{
-            display: block;
-        }
-        #mheader1{
-            font-size: 30px;
-            color: black;
-            background-color: white;
-            width: 200px;
-            border: #3d443d;
-        }
     </style>
     <style type="text/css">
     </style>
     <div id="block1">
-        <div id="online_exam">
-            <button onclick="window.location.href='../'" id="mheader1">进入题库</button>
-            <button onclick="window.location.href='../generate_paper'" id="mheader1">生成试卷</button>
-            <button onclick="window.location.href='../release_test'" id="mheader1">发布测试</button>
-            <button onclick="window.location.href='../test_info'" id="mheader1">考试信息</button>
-            <button id="mheader1" style="background-color: #3399ff; border-radius: 5px">试卷分析</button>
-            <br />
-        </div>
-        {#    hr是水平分割线的意思#}
-        <hr/>
-
         <table class="mytable">
             <tr>
-                <th class="col_1" style="font-size: 20px">First Name</th>
-                <th class="col_2" style="font-size: 20px">Last Name</th>
-                <th class="col_3" style="font-size: 20px">Examination time</th>
-                <th class="col_4" style="font-size: 20px">Grade</th>
+                <th class="col_1" style="font-size: 30px">First Name</th>
+                <th class="col_2" style="font-size: 30px">Last Name</th>
+                <th class="col_3" style="font-size: 30px">Examination time</th>
+                <th class="col_4" style="font-size: 30px">Grade</th>
             </tr>
             {% for row in score_content %}
                 <tr>
@@ -121,8 +54,8 @@
 
         <table class="mytable">
             <tr>
-                <th class="col_1" style="font-size: 20px">Question</th>
-                <th class="col_2" style="font-size: 20px">Correct</th>
+                <th class="col_1" style="font-size: 30px">Question</th>
+                <th class="col_2" style="font-size: 30px">Correct</th>
             </tr>
             {% for row in correct %}
                 <tr>

@@ -535,7 +535,7 @@ def submit_manipulate(request, class_has_room_id):  # 提交手动调课（针�
 
 def application(request):  # 打开提出调课申请页面
     current_user_group = request.user.groups.first()
-    if not current_user_group or current_user_group.name not in {'teacher', 'admin'}:
+    if not current_user_group or current_user_group.name != 'teacher':
         return err_403(request)
     if request.method == 'GET':
         return_dict = {'web_title': '提出调课申请',
@@ -580,7 +580,7 @@ def submit_application(request):  # 提交调课申请
 
 def view_application(request):
     current_user_group = request.user.groups.first()
-    if not current_user_group or current_user_group.name != 'admin':
+    if not current_user_group or current_user_group.name != 'teacher':
         return err_403(request)
     if request.method == 'GET':
         return_dict = {'web_title': '查看调课申请',
@@ -601,7 +601,7 @@ def view_application(request):
 
 def view_spec_application(request, app_id):
     current_user_group = request.user.groups.first()
-    if not current_user_group or current_user_group.name != 'admin':
+    if not current_user_group or current_user_group.name != 'teacher':
         return err_403(request)
     if request.method == 'GET':
         return_dict = {'web_title': '查看调课申请',
@@ -719,7 +719,7 @@ def submit_handle(request, application_id):  # 提交申请处理结果
 
 def teacher_class(request):  # 按教师查询课表页面
     current_user_group = request.user.groups.first()
-    if not current_user_group or current_user_group.name not in {'teacher', 'admin'}:
+    if not current_user_group or current_user_group.name != 'teacher':
         return err_403(request)
     if request.method == 'GET':  # 获取3个查询条件
         if not request.GET.get('term') and not request.GET.get('year'):
@@ -876,6 +876,9 @@ def room_class(request):
 
 
 def download(request):
+    current_user_group = request.user.groups.first()
+    if not current_user_group or current_user_group.name != 'teacher':
+        return err_403(request)
     if request.method == 'GET':
         context = {}
         year = request.GET.get('year_selected')

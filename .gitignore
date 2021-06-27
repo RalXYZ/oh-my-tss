@@ -5,3 +5,7 @@
 /venv/
 media/*
 static/media
+
+# ignored because of deployment
+uwsgi_params
+oh_my_tss/settings.py

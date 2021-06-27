@@ -500,20 +500,29 @@ def course_edit(req, option, in_course_name):
                     'edit_result': True if n_updates != 0 else False
                 })
             elif option == 'new':
-                ins = models.Course.objects.create(
-                    name=course_name,
-                    description=course_desc,
-                    credit=course_credit,
-                    capacity=course_capacity,
-                    duration=course_duration
-                )
-                return render(req, 'course_edit.html', {
-                    'web_title': '课程管理',
-                    'page_title': '添加课程',
-                    'cur_submodule': 'course',
-                    'form': CourseEditForm,
-                    'new_result': True if ins else False
-                })
+                if len(course_name) > 0 and len(course_desc) > 0 and course_credit > 0 and course_capacity > 0 and len(course_duration) > 0:
+                    ins = models.Course.objects.create(
+                        name=course_name,
+                        description=course_desc,
+                        credit=course_credit,
+                        capacity=course_capacity,
+                        duration=course_duration
+                    )
+                    return render(req, 'course_edit.html', {
+                        'web_title': '课程管理',
+                        'page_title': '添加课程',
+                        'cur_submodule': 'course',
+                        'form': CourseEditForm,
+                        'new_result': True if ins else False
+                    })
+                else:
+                    return render(req, 'course_edit.html', {
+                        'web_title': '课程管理',
+                        'page_title': '添加课程',
+                        'cur_submodule': 'course',
+                        'form': CourseEditForm,
+                        'new_result': False
+                    })
             elif option == 'delete':
                 return err_403(req)
             else:
@@ -556,23 +565,26 @@ def course_delete(req, name):
 
 
 def class_list(req, page=0):
-    classes = models.Class.objects.all()
-    page_sum = (len(classes) - 1) // 10 + 1
-    disp_classes = classes[page * 10:(page + 1) * 10]
-    if page >= page_sum:
-        return err_404(req)
-    return render(req, 'classlist.html', {
-        'web_title': '教学班级',
-        'page_title': '教学班级管理',
-        'cur_submodule': 'class',
-        'classes': disp_classes,
-        'cur_page': page + 1,
-        'prev_page': page - 1,
-        'prev_disabled': page == 0,
-        'next_page': page + 1,
-        'next_disabled': page + 1 >= page_sum,
-        'page_sum': page_sum,
-    })
+    if req.user.has_perm('info_mgt.view_class'):
+        classes = models.Class.objects.all()
+        page_sum = (len(classes) - 1) // 10 + 1
+        disp_classes = classes[page * 10:(page + 1) * 10]
+        if page >= page_sum:
+            return err_404(req)
+        return render(req, 'classlist.html', {
+            'web_title': '教学班级',
+            'page_title': '教学班级管理',
+            'cur_submodule': 'class',
+            'classes': disp_classes,
+            'cur_page': page + 1,
+            'prev_page': page - 1,
+            'prev_disabled': page == 0,
+            'next_page': page + 1,
+            'next_disabled': page + 1 >= page_sum,
+            'page_sum': page_sum,
+        })
+    else:
+        return err_403(req)
 
 
 def class_add(req):
