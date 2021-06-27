@@ -13,6 +13,20 @@
 {% endblock extra_head %}
 
 {% block card_content %}
+    <script type="text/javascript">
+                function DeleteCheck(room_id) {
+                    let my_message=confirm("确定要删除该教室吗?");
+                    if(my_message === true)
+                    {
+                        <!-- 在数据库中删除该教室-->
+                        window.location.href="../delete_room/" + room_id;
+                    }
+                    else
+                    {
+
+                    }
+                }
+           </script>
     <script>
         {% if delete_room_successfully %}
         alert("教室删除成功")
@@ -66,23 +80,10 @@
         <td>
            <a class="operation-btn" name="modify_room" href="{% url 'modify_certain_room' i.id %}">修改</a>
            <!-- 点击修改的时候，会跳转到modify_certain_room.html界面，对特定教室进行修改 -->
-           <button class="operation-btn" name="delete_room" onclick="DeleteCheck()">删除</button>
+           <button class="operation-btn" name="delete_room" onclick="DeleteCheck({{ i.id }})">删除</button>
            <!-- 这里点击删除后会调出确认框，如果点击确认的话就在数据库中删除该教室，如果取消则不发生。删除后返回delete_room_successfully
             来判断是否删除成功-->
-           <script type="text/javascript">
-                function DeleteCheck() {
-                    let my_message=confirm("确定要删除该教室吗?");
-                    if(my_message === true)
-                    {
-                        <!-- 在数据库中删除该教室-->
-                        window.location.replace({% url 'delete_room' i.id %})
-                    }
-                    else
-                    {
 
-                    }
-                }
-           </script>
         </td>
       </tr>
       {% endfor %}
