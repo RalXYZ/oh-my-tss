@@ -29,7 +29,7 @@
             <td>
                 {% for j in app.Class.classhasroom_set.all %}
                 <div>
-                    {% if app.Class.not_scheduled == False %}
+                    {% if j.classroom %}
                         {% if j.day == 1 %}
                             周一
                         {% elif j.day == 2 %}
