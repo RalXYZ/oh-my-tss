@@ -83,7 +83,7 @@ def info_edit(req, username='#'):
             return False
 
     if req.method == 'POST':
-        if (is_valid(req) and username == req.user.username) or (req.user.has_perm('info_mgt.change_student') and req.user.has_perm('info_mgt.change_teacher')):
+        if (is_valid(req) and username == req.user.username) or (is_valid(req) and req.user.has_perm('info_mgt.change_student') and req.user.has_perm('info_mgt.change_teacher')):
             new_username = req.POST['username']
             if new_username is None:
                 new_username = req.user.username
