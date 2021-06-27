@@ -140,6 +140,7 @@ def rsdetail(request):
         courselist=list(Class.objects.values('course_id').filter(id=classid))
         courseid=courselist[0]['course_id']
         course = Course.objects.filter(id=courseid).first()
+        #course_name = Course.objects.filter(id=courseid).values_list('name',flat=True)[0]
         userid=request.user.id
         user = User.objects.filter(id=userid).first()
         res.course.add(course)
@@ -202,6 +203,7 @@ def rsdetail(request):
     context = {
         'web_title':'资源共享',
         'page_title':'资源共享',
+        #'course_name': course_name,
         "files": files,
         'folder': folder
     }
@@ -274,7 +276,7 @@ def new(request):
         New_folder_name = request.POST.get('newfolder')
     folder_id = request.session['cur_folderID']
     folder_path = Source.objects.filter(id=folder_id).values_list('file_path', flat=True)[0]
-    New_folder_path = folder_path + '\\' + New_folder_name
+    New_folder_path = os.path.join(folder_path, str(New_folder_name))
     os.mkdir(New_folder_path)
     res = Source.objects.create(file_path=New_folder_path,file_name=New_folder_name, file_type='2', parent=folder_id)
     classid= request.session['class']
@@ -378,6 +380,7 @@ def rename(request):
     res.update(file_name=newname,file_path=newpath)
     rewriteroot(request)
     return redirect(rsdetail)
+
 def loopdelete(request,fileid,parent):
     childlist = list(Source.objects.values().filter(parent=parent))
     if childlist:
@@ -403,6 +406,7 @@ def loopdelete(request,fileid,parent):
     filetodel.delete()
     rewriteroot(request)
     return;
+
 def deletefile(request):
     dict_p = request.POST
     fileid=0
@@ -452,7 +456,7 @@ def homework(request):
         studentid=stu_list[0]['id']
         # print(studentid)
         classlist=list(StuHasClass.objects.values('Class_id').filter(Student_id=studentid))
-        print(classlist)
+        # print(classlist)
         listtoshow=[]
         classtakentime=[]
         classidlist=[]
@@ -471,7 +475,7 @@ def homework(request):
                 classtakentime.append({'Class_id':classres1['Class_id'],'date':numswitch(classres1['day']),'timespan':getspan(classres1['start_at'],classres1['duration'])})
             listtoshow.append(classres1)
             # print(listtoshow)
-        print(classtakentime)
+        # print(classtakentime)
         for classid1 in classidlist:
             wlist.append({'Class_id':classid1,'time':[]})
         # print(wlist)
@@ -535,7 +539,7 @@ def homework(request):
                        templist.append(wlist1)
             course[0]['class_list']=templist  
             coursename.append(course[0])
-        print(coursename)
+        # print(coursename)
         return render(request,"homework_teacher.html",{
             'web_title':'课程作业',
             'page_title':'课程作业',
@@ -551,7 +555,7 @@ def hwdetail(request):
     if request.POST:
         dict_p = request.POST
         homeworkid=0
-        print(dict_p)
+        # print(dict_p)
         for k,v in dict_p.items():
             if (v=='查看详情'):
                 homeworkid=k
@@ -637,7 +641,7 @@ def hwlist(request):
     #print(asslist)
     infolist=[]
     submit = dict(AssignmentGrade.objects.filter(Class=classid).values_list('Assignment', 'is_submit'))
-    print("sssss")
+    
     # print(ifsubmit)
     courselist=list(Class.objects.values('course_id').filter(id=classid))
     course_id=courselist[0]['course_id']
@@ -659,7 +663,7 @@ def hwlist(request):
                         'end':timezone.localtime(ass['assignment_end']),
                         'ifsubmit':ifsubmit
                         })
-    print(infolist)
+    # print(infolist)
     return render(request,"homework_list.html",{
         'web_title':'课程作业列表',
         'page_title':'课程作业列表',
@@ -702,7 +706,7 @@ def hwlist_t(request):
             'end':timezone.localtime(ass['assignment_end']),
             'id':ass['id'],
             })
-    print(wlist)
+    # print(wlist)
     return render(request,"homework_list_t.html",{
         'web_title':'课程作业',
         'page_title':'课程作业',
@@ -722,7 +726,7 @@ def addassignment(request):
     courselist=list(Class.objects.values('course_id').filter(id=classid))
     courseid=courselist[0]['course_id']
     dict_p = request.POST
-    print(dict_p)
+    # print(dict_p)
     homeworkname=""
     starttime=""
     endtime=""
@@ -743,10 +747,25 @@ def addassignment(request):
     courses = Course.objects.filter(id=courseid).first()
     classes = Class.objects.filter(id=classid).first()
     folder = Source.objects.filter(Class=classid).filter(file_name="assignment").first()
-    homeworking.folder_id.add(folder)
+    print(folder)
+    # 新建作业文件夹
+    New_folder_name = homeworkname
+    folder_id = folder.id
+    folder_path = Source.objects.filter(id=folder_id).values_list('file_path', flat=True)[0]
+    New_folder_path = os.path.join(folder_path, str(New_folder_name))
+    os.mkdir(New_folder_path)
+    res = Source.objects.create(file_path=New_folder_path,file_name=New_folder_name, file_type='2', parent=folder_id)
+    userid=request.user.id
+    user = User.objects.filter(id=userid).first()
+    res.course.add(courses)
+    res.Class.add(classes)
+    res.user.add(user)
+    # 新建作业文件夹
+    homeworking.folder_id.add(res.id)
     homeworking.course.add(courses)
     homeworking.Class.add(classes)
     homeworking = Assignment.objects.values().filter(Class=classid)
+    
     # return HttpResponse(dict_p)
     return redirect("hwlist_t")
 
