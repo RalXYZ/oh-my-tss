@@ -19,6 +19,7 @@ from django.utils import timezone
 def index(request):
     # return HttpResponse(request.user.id)
     userid=request.user.id
+    print(userid)
 
     stu_list=list(Student.objects.values().filter(user_id=userid))
     admin_list=list(Avatar.objects.filter(user_id=userid))
@@ -28,9 +29,11 @@ def index(request):
 
     
     if stu_list:
+        
         stuid=stu_list[0]['id']
-        graderesult=CourseResult.objects.all().filter(student=stuid)
-        gradelist=list(CourseResult.objects.values('final_result'))
+        print(stuid)
+        graderesult=CourseResult.objects.all().filter(student=stuid).filter(is_submit=1)
+        gradelist=list(CourseResult.objects.values('final_result').filter(student=stuid).filter(is_submit=1))
         courseresult2=[]
         i=0
         gp=0
@@ -529,7 +532,7 @@ def operator_admin(request):
             break
     if(op==0):
         op=0
-        res.update(permit=-1)
+        res.update(permit=1)
     elif(op==1):
         op=1  
         i=0      
