@@ -1,0 +1,55 @@
+{% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
+<div id="rsdetail" class="card-content">
+    <label style="font-size: 25px;">搜索结果</label>
+    <p></p>
+    <div>
+        <form action="{%url 'return_previous_level'%}" method="POST">
+            {% csrf_token %}
+            <button title="返回上一级目录" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
+                 返回上一级目录
+             </button>
+        </form>
+
+        <form action="{%url 'return_share_index'%}" method="POST">
+            {% csrf_token %}
+            <button title="返回课程列表" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
+                 返回课程列表
+             </button>
+        </form>
+    </div>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>文件名</th>
+                <th>上传时间</th>
+                <th>上传人</th>
+                <th>操作</th>
+                <th></th>
+                <th></th>
+        </thead>
+
+        <tbody>
+            {%for file in files%}
+            <tr>
+                <td>{{file.file_name}}</td>
+                <td>{{file.updated_at}}</td>
+                <td>{{file.uploader}}</td>
+                <td>
+                    <a href="{%url 'download' file.id%}">下载</a>
+                </td>
+                <td>
+                    <form action="{%url 'deletefile'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="submit" name="{{file.id}}" value="删除" class="operation-btn">
+                    </form>
+                </td>
+
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock card_content %}

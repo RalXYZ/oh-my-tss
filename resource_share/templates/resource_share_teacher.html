@@ -1,0 +1,76 @@
+{% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %} {% endblock extra_head %} {% block card_content %}
+
+<style>
+    h4 {
+        white-space: pre
+    }
+    
+    .p3 {
+        float: left;
+    }
+    
+    .a2 {
+        float: right;
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        height: 120px;
+    }
+    
+    th,
+    td {
+        padding: 5px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        font-weight: bold;
+    }
+    
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="card-content">
+    <h4>开课列表</h4>
+    {%for res in wholelist%}
+    <h5>{{res.name}}</h5>
+
+    <ul>
+        <li class="p3">课程学期：{{res.info_list.0.year}}年{{res.info_list.0.term}}学期</li>
+        <!-- <li class="a2">开课学院：计算机科学与技术学院</li> -->
+    </ul>
+
+    <br>
+
+    <table>
+        <tr>
+            <th>班级</th>
+            <th>详情页</th>
+        </tr>
+        {%for res1 in res.class_list%}
+        <tr>
+            <td>
+                {%for time1 in res1.time%} 周{{time1.date}} {%for times in time1.timespan%} {{times}} {%endfor%} 节、 {%endfor%}
+            </td>
+            <td>
+                <form action="{%url 'rsdetail'%}" method="POST">
+                    <input type="submit" value="查看资源" name="{{res1.Class_id}}" style="border: 0;
+        background: none;
+        color: #66ccff;"> {%csrf_token%}
+                </form>
+                <!-- <a href = grade_detail_class>详情</a> -->
+            </td>
+        </tr>
+        {%endfor%}
+    </table>
+
+    {%endfor%}
+</div>
+
+
+{% endblock card_content %}
