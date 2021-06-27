@@ -51,6 +51,7 @@ class Score(models.Model):
     date = models.DateTimeField()
     score = models.FloatField()
     weight = models.FloatField()  # 分数在总成绩中的占比
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
 
 class StudentAnswer(models.Model):
@@ -58,3 +59,5 @@ class StudentAnswer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_right = models.BooleanField()
     score = models.FloatField()
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    paper_id = models.IntegerField()
