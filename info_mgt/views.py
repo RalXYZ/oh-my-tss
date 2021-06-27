@@ -102,7 +102,7 @@ def info_edit(req, username='#'):
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
                 this_user = models.User.objects.get(username=new_username)
-                if this_user:
+                if this_user and new_username != username:
                     return render(req, 'info_edit.html', {
                         'web_title': '个人信息修改', 'page_title': '个人信息修改', 'request_user': req.user,
                         'form': SelfInfoForm, 'edit': False, 'dup':True})
@@ -201,6 +201,18 @@ def account_edit(req, username='#'):
                 new_major = req.POST['major']
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
+
+                this_user = models.User.objects.get(username=new_username)
+                if this_user and new_username != username:
+                    return render(req, 'account_edit.html', {
+                        'web_title': '用户信息修改',
+                        'page_title': '用户信息修改',
+                        'request_user': req.user,
+                        'forms': SelfInfoForm(),
+                        'edit': False,
+                        'edit_result': True,
+                        'dup': True
+                    })
 
                 try:
                     query = models.Avatar.objects.filter(user=req.user)
