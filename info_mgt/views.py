@@ -565,23 +565,26 @@ def course_delete(req, name):
 
 
 def class_list(req, page=0):
-    classes = models.Class.objects.all()
-    page_sum = (len(classes) - 1) // 10 + 1
-    disp_classes = classes[page * 10:(page + 1) * 10]
-    if page >= page_sum:
-        return err_404(req)
-    return render(req, 'classlist.html', {
-        'web_title': '教学班级',
-        'page_title': '教学班级管理',
-        'cur_submodule': 'class',
-        'classes': disp_classes,
-        'cur_page': page + 1,
-        'prev_page': page - 1,
-        'prev_disabled': page == 0,
-        'next_page': page + 1,
-        'next_disabled': page + 1 >= page_sum,
-        'page_sum': page_sum,
-    })
+    if req.user.has_perm('info_mgt.view_class'):
+        classes = models.Class.objects.all()
+        page_sum = (len(classes) - 1) // 10 + 1
+        disp_classes = classes[page * 10:(page + 1) * 10]
+        if page >= page_sum:
+            return err_404(req)
+        return render(req, 'classlist.html', {
+            'web_title': '教学班级',
+            'page_title': '教学班级管理',
+            'cur_submodule': 'class',
+            'classes': disp_classes,
+            'cur_page': page + 1,
+            'prev_page': page - 1,
+            'prev_disabled': page == 0,
+            'next_page': page + 1,
+            'next_disabled': page + 1 >= page_sum,
+            'page_sum': page_sum,
+        })
+    else:
+        return err_403(req)
 
 
 def class_add(req):
