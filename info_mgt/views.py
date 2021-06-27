@@ -99,13 +99,13 @@ def info_edit(req):
 
             if query is None and new_avatar is not None:
                 result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
-                f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                 for chunk in new_avatar.chunks():
                     f.write(chunk)
                 f.close()
             elif new_avatar is not None:
                 result2 = query.update(avatar=new_avatar)
-                f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                 for chunk in new_avatar.chunks():
                     f.write(chunk)
                 f.close()
@@ -183,13 +183,13 @@ def account_edit(req, username='#'):
 
                 if query is None and new_avatar is not None:
                     result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
                 elif new_avatar is not None:
                     result2 = query.update(avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
@@ -321,13 +321,13 @@ def account_add(req):
                 query = models.Avatar.objects.filter(user=this_user)
                 if len(query) == 0 and new_avatar is not None and result_0:
                     result_2 = models.Avatar.objects.create(user=this_user, avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
                 elif new_avatar is not None and result_0:
                     result_2 = query.update(avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
