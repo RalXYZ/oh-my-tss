@@ -101,12 +101,20 @@ def info_edit(req, username='#'):
             password1 = req.POST['password']
             password2 = req.POST['password_again']
             try:
-                query = models.Avatar.objects.filter(user=req.user)
+                if username != '#':
+                    temp = models.User.objects.get(username=username)
+                    query = models.Avatar.objects.filter(user=temp)
+                else:
+                    query = models.Avatar.objects.filter(user=req.user.username)
             except:
                 query = None
 
             if query is None and new_avatar is not None:
-                result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
+                if username != '#':
+                    temp = models.User.objects.get(username=username)
+                    result2 = models.Avatar.objects.create(user=temp, avatar=new_avatar)
+                else:
+                    result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
                 f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                 for chunk in new_avatar.chunks():
                     f.write(chunk)
@@ -119,8 +127,10 @@ def info_edit(req, username='#'):
                 f.close()
             else:
                 result2 = True
-
-            query_set = models.User.objects.filter(id=req.user.id)
+            if username != '#':
+                query_set = models.User.objects.filter(username=username)
+            else:
+                query_set = models.User.objects.filter(username=req.user.username)
             if req.POST['password'] is not None:
                 result = query_set.update(username=new_username, last_name=new_last_name,
                                           first_name=new_first_name, email=new_email, password=make_password(password1))
