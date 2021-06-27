@@ -113,8 +113,12 @@ def info_edit(req):
                 result2 = True
 
             query_set = models.User.objects.filter(id=req.user.id)
-            result = query_set.update(username=new_username, last_name=new_last_name,
-                                      first_name=new_first_name, email=new_email, password=make_password(password1))
+            if req.POST['password'] is not None:
+                result = query_set.update(username=new_username, last_name=new_last_name,
+                                          first_name=new_first_name, email=new_email, password=make_password(password1))
+            else:
+                result = query_set.update(username=new_username, last_name=new_last_name,
+                                          first_name=new_first_name, email=new_email)
         else:
             result = 0
             result_2 = 0
@@ -209,8 +213,12 @@ def account_edit(req, username='#'):
                             pass
 
                 query_set = models.User.objects.filter(username=username)
-                result_0 = query_set.update(username=new_username, last_name=new_last_name,
-                                          first_name=new_first_name, email=new_email, password=make_password(password1))
+                if req.POST['password'] is not None:
+                    result_0 = query_set.update(username=new_username, last_name=new_last_name,
+                                              first_name=new_first_name, email=new_email, password=make_password(password1))
+                else:
+                    result_0 = query_set.update(username=new_username, last_name=new_last_name,
+                                                first_name=new_first_name, email=new_email)
                 result_0 = 1
             else:
                 result_0 = 0
@@ -260,7 +268,7 @@ def account_add(req):
             query = None
         if query is not None:
             flag1 = False
-        if req.POST['password'] == req.POST['password_again']:
+        if req.POST['password'] == req.POST['password_again'] and req.POST['password'] is not None and req.POST['password_again'] is not None:
             flag2 = True
         if req.POST['role'] == 'student':
             query = models.Major.objects.get(name=req.POST['major'])
