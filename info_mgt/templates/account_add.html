@@ -16,7 +16,7 @@
     <form action="{{ app_path }}" method="post" id="class-add-form">{% csrf_token %}
         {% form form=forms %}
         {% endform %}
-        <input type="file" name="avatar"/>
+        <input type="file" name="avatar" accept="image/*"/>
         <div class="action right-align">
             <button type="submit" class="btn btn-primary">提交</button>
         </div>
