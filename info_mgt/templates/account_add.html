@@ -31,6 +31,11 @@
             <i class="material-icons">warning</i>
             添加失败！
             </div>
+        {% elif result == 'dup'%}
+            <div class="err-msg">
+            <i class="material-icons">warning</i>
+            用户名重复！
+            </div>
         {% endif %}
     </div>
 {% endblock card_content %}

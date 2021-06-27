@@ -101,12 +101,18 @@ def info_edit(req, username='#'):
 
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
+                this_user = models.User.objects.get(username=new_username)
+                if this_user:
+                    return render(req, 'info_edit.html', {
+                        'web_title': '个人信息修改', 'page_title': '个人信息修改', 'request_user': req.user,
+                        'form': SelfInfoForm, 'edit': False, 'dup':True})
+
                 try:
                     if username != '#':
                         temp = models.User.objects.get(username=username)
                         query = models.Avatar.objects.filter(user=temp)
                     else:
-                        query = models.Avatar.objects.filter(user=req.user.username)
+                        query = models.Avatar.objects.filter(user=req.user)
                 except:
                     query = None
 
@@ -120,7 +126,7 @@ def info_edit(req, username='#'):
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
-                elif new_avatar is not None:
+                elif query is not None and new_avatar is not None:
                     result2 = query.update(avatar=new_avatar)
                     f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
@@ -316,6 +322,17 @@ def account_add(req):
                 new_group = req.POST['role']
                 pass_word1 = req.POST['password']
                 pass_word2 = req.POST['password_again']
+                this_user = models.User.objects.get(username=new_username)
+                if this_user:
+                    return render(req, 'account_add.html', {
+                        'web_title': '用户信息添加',
+                        'page_title': '用户信息添加',
+                        'request_user': req.user,
+                        'result': 'dup',
+                        'forms': AddForm,
+                        'edit_result': False
+                    })
+
                 result_0 = models.User.objects.create(username=new_username, last_name=new_last_name,
                                                       first_name=new_first_name, email=new_email, password=make_password(pass_word1))
 
