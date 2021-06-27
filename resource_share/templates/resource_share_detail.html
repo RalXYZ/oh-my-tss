@@ -17,7 +17,6 @@
     height: 44px;
     line-height: 36px;
     padding: 2px 4px;
-    text-transform: uppercase;
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
     /* box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%); */
@@ -31,49 +30,56 @@
 
         <br/>
 
-        <table>
+        <div >
+            <div style="float: left">
             <form action="{%url 'return_previous_level'%}" method="POST">
                 {% csrf_token %}
                 <button title="返回上一级目录" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
                      返回上一级目录
                 </button>
             </form>
-        
-        
-        
+        </div>
+        <div style="float: left">
             <form action="{%url 'return_share_index'%}" method="POST">
                 {% csrf_token %}
                 <button title="返回课程列表" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
                      返回课程列表
                  </button>
             </form>
-            
+        </div>
+        <div style="float: right">
                 <form action="{%url 'new'%}" method="POST">
                     {%csrf_token%}
                     <input type="submit" value="新建文件夹" class="btn btn-default btn-sm" type="button" style="margin-right: 5px; float: right;">
-                    <input type="text" placeholder="请输入文件夹名" name="newfolder" style="width: 30%;float: right;" required>
+                    <input type="text" placeholder="请输入文件夹名" name="newfolder" style="width: 60%; float: right;" required>
                 </form>
-            
-            
-            
                 
-            
-        </table>
-        <table>
+            </span>
+        </div>
+        <br/><br/><br/>
+        </div>
+
+        <div></div>
+
+        <div>
+        <div style="float: left">
         <form action="{%url 'up'%}"  enctype="multipart/form-data" method="POST">
             <input type="file"   class="btn-choosefile"   name="myfile">
             <input type="submit" class="btn btn-default btn-sm" value="上传"> {%csrf_token%}
         </form>
+    </div>
+    <div style="float: right">
         <form action="{%url 'search'%}" method="POST">
             {%csrf_token%}
             <span style="float:right">
                 <input type="submit" value="搜索" id="dataRecycle" class="btn btn-default btn-sm" style="margin-left: 5px;margin-top: 5px;">
             </span>
             <span style="float:right">
-                <input type="text" name="搜" placeholder="搜索文件" class="file_search_input" size=20>
+                <input type="text" name="搜" placeholder="搜索文件" class="file_search_input" size=25>
             </span>
         </form>
-    </table>
+    </div>
+        </div>
     </div>
 
 
