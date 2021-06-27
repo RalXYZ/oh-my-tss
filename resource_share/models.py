@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import ModelState
 from django.db.models.fields.related import ForeignKey
+from django.utils import tree
 from info_mgt.models import Student, Course, Class
 
 
@@ -23,11 +24,13 @@ class Source(models.Model):
     course = models.ManyToManyField(Course)
     created_at = models.DateField(auto_now_add=True)    # 自动添加上传时间，之后不会再更改
     updated_at = models.DateField(auto_now=True)    # 自动更新修改时间，每次执行操作都会相应的更改
+    canbesearched = models.BooleanField(null=True,default=False)
 
 
 class Assignment(models.Model):
     course = models.ManyToManyField(Course)  # 外键
     Class = models.ManyToManyField(Class)
+    folder_id = models.ManyToManyField(Source)
     assignment_name = models.CharField(max_length=20,null=True)
     assignment_start = models.DateTimeField()
     assignment_end = models.DateTimeField()
@@ -39,6 +42,12 @@ class AssignmentGrade(models.Model):
     student = models.ManyToManyField(Student)  # 外键
     course = models.ManyToManyField(Course)  # 外键
     Class = models.ManyToManyField(Class)
-    assignment_path = models.CharField(max_length=256)
+    Assignment = models.ManyToManyField(Assignment)
+    file = models.ManyToManyField(Source)
     assignment_result = models.IntegerField(null=True, blank=True)
     is_submit = models.BooleanField(null=True,)
+
+
+class Authority(models.Model):
+    hasauthority = models.BooleanField(null=True)
+    Class = models.ManyToManyField(Class)

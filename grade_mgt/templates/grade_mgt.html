@@ -1,25 +1,19 @@
-{% extends 'skeleton.html' %} 
-
-{% load static %} 
-{% load material_form %} 
-
-{% block extra_head %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'info_mgt/css/info_mgt.css' %}"
-/>
-{% endblock extra_head %} 
-
-{% block card_content %}
+{% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
 <div id="grade_mgt" class="card-content">
     <label style="font-size: 25px;">在校学习成绩</label>
-    <table><thead>
-        <tr><th>总学分:</th><th>GPA:</th></tr>
-    <tr><th>课程号</th><th>课程名</th><th>学分</th><th>分数（百分制）</th><th>绩点</th></th>
-    </thead>
-    <tbody>
-        <!-- <tr>
+    <table style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th>课程号</th>
+                <th>课程名</th>
+                <th>学分</th>
+                <th>分数（百分制）</th>
+                <th>绩点</th>
+                </th>
+        </thead>
+        <tbody>
+            <!-- <tr>
             <td>22120032</td>
             <td>软件工程基础</td>
             <td>2.5</td>
@@ -29,26 +23,42 @@
                 <button class="operation-btn" onclick="window.location.href='grade_detail'">查看详情</button>
             </td>
         </tr> -->
-        {%if course_list%}
-        {%for res in course_list%}
-        <tr>
-            {%for item in res.items%}
-            <td>{{item.1}}</td>
+            {%if course_list%} {%for res in course_list%}
+            <tr>
+                {%for item in res.items%}
+                <td>{{item.1}}</td>
+                {%endfor%}
+                <td>
+                    <form action="{%url 'grade_detail'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="submit" class="operation-btn" name={{res.id}} value="查看详情">
+                    </form>
+                </td>
+            </tr>
             {%endfor%}
-            <td>
-                <form action="{%url 'grade_detail'%}" method="POST">
-                    {%csrf_token%}
-                    <input type="submit" class="operation-btn" name={{res.id}} value="查看详情">
-                </form>
-            </td>
-        </tr>
-        {%endfor%}
-        {%endif%}
-    </tbody>
+            <tr class="table3_tr">
+                <td>
+                    <ul>
+                        <li class="p3">总学分：{{sum}}</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li class="p3">平均分：{{avg|floatformat:2}}</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li class="p3">均绩：{{avggp|floatformat:2}}</li>
+                    </ul>
+                </td>
+            </tr>
+            {%endif%}
+
+        </tbody>
     </table>
 
     <!--div class="float-new-btn"></div-->
     <div class="table-foot-bar">上一页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 - 6, 共 1 页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下一页</div>
-    </div>
+</div>
 {% endblock card_content %}
-

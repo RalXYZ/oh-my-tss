@@ -14,3 +14,12 @@ class CourseResult(models.Model):
     class_performance = models.IntegerField(null=True, blank=True)
     exam_result = models.IntegerField(null=True, blank=True)
     final_result = models.IntegerField(null=True, blank=True)
+class ChangeResult(models.Model):
+    Class = models.ManyToManyField(Class)  # 外键
+    student = models.ManyToManyField(Student)  # 外键
+    permit = models.BooleanField(null=True)
+    submit_time = models.DateTimeField()
+    reason = models.CharField(max_length=100)
+    class_performance = models.IntegerField(null=True, blank=True)
+    exam_result = models.IntegerField(null=True, blank=True)
+    final_result = models.IntegerField(null=True, blank=True)

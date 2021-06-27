@@ -1,52 +1,49 @@
-{% extends 'skeleton.html' %} 
-
-{% load static %} 
-{% load material_form %} 
-
-{% block extra_head %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'info_mgt/css/info_mgt.css' %}"
-/>
-{% endblock extra_head %} 
-
-{% block card_content %}
+ {% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
 <div id="homework_detail" class="card-content">
-    <label style="font-size: 25px;">作业名称</label>
-    <button onclick=" " id="dataRecycle"
-    title="返回作业列表" class="btn btn-default btn-sm" style="margin-left: 5px; float:right">
+    <label style="font-size: 25px;">{{assinfo.0.assignment_name}}</label>
+    <button onclick="window.location.href='../resource_share/homework_list'" id="dataRecycle" title="返回作业列表" class="btn btn-default btn-sm" style="margin-left: 5px; float:right">
     返回作业列表
     </button>
-    <button onclick="  " title="提交作业" class="btn btn-default btn-sm" type="button" style="margin-right: 5px; float:right">
-        提交作业
-    </button>
-    <table><thead>
-    <tr><th></th><th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>所属课程</td>
-            <td>软件工程基础</td>
-        </tr>
-        <tr>
-            <td>截止时间</td>
-            <td>20210630 23:59</td>
-        </tr>
-        <tr>
-            <td>当前状态</td>
-            <td>未提交</td>
-        </tr>
-        <tr>
-            <td>作业成绩</td>
-            <td>未批改</td>
-        </tr>
-    </tbody>
+    <form action="{%url 'up_assignment'%}" enctype="multipart/form-data" method="POST">
+        <input type="file" name="my_assignment">
+        <input type="submit" value="submit"> {%csrf_token%}
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>所属课程</td>
+                <td>{{assinfo.0.coursename}}</td>
+            </tr>
+            <tr>
+                <td>开始时间</td>
+                <td>{{assinfo.0.assignment_start}}</td>
+            </tr>
+            <tr>
+                <td>截止时间</td>
+                <td>{{assinfo.0.assignment_end}}</td>
+            </tr>
+            <tr>
+                <td>作业占比</td>
+                <td>{{assinfo.0.assignment_ratio}}</td>
+            </tr>
+            <tr>
+                <td>当前状态</td>
+                <td>{{msg1}}</td>
+            </tr>
+            <tr>
+                <td>作业成绩</td>
+                <td>{%if grade%}{{grade}}{%else%}{{msg}}{%endif%}</td>
+            </tr>
+        </tbody>
     </table>
 
     <div class="detail_container" style="width:100%; margin:10px auto 0;background-color: #f0f0f0; padding: 2% 5%; border-radius: 10px">
-        <p>浙江大学是一所历史悠久、声誉卓著的高等学府，坐落于中国历史文化名城、风景旅游胜地杭州。浙江大学的前身求是书院创立于1897年，为中国人自己最早创办的新式高等学校之一。1928年，定名国立浙江大学。抗战期间，浙大举校西迁，在贵州遵义、湄潭等地办学七年，1946年秋回迁杭州。1952年全国高等学校院系调整时，浙江大学部分系科转入兄弟高校和中国科学院，留在杭州的主体部分被分为多所单科性院校，后分别发展为原浙江大学、杭州大学、浙江农业大学和浙江医科大学。1998年，同根同源的四校实现合并，组建了新浙江大学，迈上了创建世界一流大学的新征程。</p>
-        <p>假设你是Li Hua，请写一封信向你的外国友人Tony介绍浙大的这一段历史。</p>
-        <p>注意：（1）词数不少于100；（2）可适当加入细节，是内容充实、行文连贯；（3）开头和结尾已给出，不计入总词数。</p>
+        <p>{{assinfo.0.assignment_intro}}</p>
     </div>
-{% endblock card_content %}
+    {% endblock card_content %}

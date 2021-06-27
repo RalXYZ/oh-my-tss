@@ -8,21 +8,37 @@
             <input type="file" name="myfile">
             <input type="submit" value="submit"> {%csrf_token%}
         </form>
-        <button onclick="  " title="新建文件夹" class="btn btn-default btn-sm" type="button" style="margin-right: 5px;">
-			新建文件夹
-		</button>
-        <button onclick=" " id="dataRecycle" title="返回课程列表" class="btn btn-default btn-sm" style="margin-left: 5px;">
-			返回课程列表
-			</button>
-        <span style="float:right">
-            <button onclick="  " id="dataRecycle"
-            title="搜索" class="btn btn-default btn-sm" style="margin-left: 5px;margin-top: 5px;">
-            搜索
-            </button>
-        </span>
-        <span style="float:right">
-			<input type="text" placeholder="搜索文件" class="file_search_input" size=20>
-		</span>
+
+        <form action="{%url 'new'%}" method="POST">
+            {%csrf_token%}
+            <input type="text" name="newfolder" style="width: 50%;" required>
+            <input type="submit" value="新建文件夹" class="btn btn-default btn-sm" type="button" style="margin-right: 5px; ">
+        </form>
+
+        <form action="{%url 'return_previous_level'%}" method="POST">
+            {% csrf_token %}
+            <button title="返回上一级目录" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
+                 返回上一级目录
+             </button>
+        </form>
+
+        <form action="{%url 'return_share_index'%}" method="POST">
+            {% csrf_token %}
+            <button title="返回课程列表" type="submit" class="btn btn-default btn-sm" style="margin-left: 5px;">
+                 返回课程列表
+             </button>
+        </form>
+
+        <form action="{%url 'search'%}" method="POST">
+            {%csrf_token%}
+            <span style="float:right">
+                <input type="submit" value="搜索" id="dataRecycle" class="btn btn-default btn-sm" style="margin-left: 5px;margin-top: 5px;">
+            </span>
+            <span style="float:right">
+                <input type="text" name="搜" placeholder="搜索文件" class="file_search_input" size=20>
+            </span>
+        </form>
+
     </div>
 
 
@@ -34,7 +50,8 @@
                 <th>上传时间</th>
                 <th>上传人</th>
                 <th>操作</th>
-                <th>
+                <th></th>
+                <th></th>
         </thead>
 
         <tbody>
@@ -42,25 +59,58 @@
             <tr>
                 <td>
                     <img src="{%static 'folder-img.png'%}" width="20px" />
-                    <a href="{% url 'rsdetail' ?folder={{ item.id }}">
-                    {{item}}
-                </a>
+                    <!-- <form action="{%url 'rsdetail'%}" method="POST">
+                         {% csrf_token %}
+                         <button type="submit" value="{{item.id}}" name="查看资源" class="operation-btn" >
+                             查看资源
+                         </button>
+                     </form> -->
+                    <a href="{%url 'rsdetail' %}?folder={{item.id}}">
+                     {{item.file_name}}
+                 </a>
+                </td>
+                <td>{{item.file_size}}</td>
+                <td>{{item.updated_at}}</td>
+                <td>{{item.uploader}}</td>
+                <td>
+                    <form action="{%url 'rename'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="text" name="这种名字" style="width: 75%;" required>
+                        <input type="submit" name="{{item.id}}" value="重命名" class="operation-btn">
+                    </form>
+                </td>
+                <td>
+                    <form action="{%url 'deletefile'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="submit" name="{{item.id}}" value="删除" class="operation-btn"> {%csrf_token%}
+                    </form>
                 </td>
             </tr>
             {%endfor%} {%for file in files%}
             <tr>
-                <td>{{file}}</td>
-                <td>256KB</td>
-                <td>2021-6-25</td>
-                <td>助教</td>
+                <td>{{file.file_name}}</td>
+                <td>{{file.file_size}}</td>
+                <td>{{file.updated_at}}</td>
+                <td>{{file.uploader}}</td>
                 <td>
-                    <form method="POST">
+                    <form action="{%url 'rename'%}" method="POST">
                         {%csrf_token%}
-                        <a href="">重命名</a>
-                        <a href="{%url 'download' file%}">下载</a>
-                        <a href="">删除</a>
+                        <input type="text" name="这种名字" style="width: 75%;" required>
+                        <!-- <a href="">重命名</a> -->
+                        <input type="submit" name="{{file.id}}" value="重命名" class="operation-btn">
+                    </form>
+
+                </td>
+                <td>
+                    <a href="{%url 'download' file.id%}">下载</a>
+                </td>
+                <td>
+                    <form action="{%url 'deletefile'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="submit" name="{{file.id}}" value="删除" class="operation-btn">
                     </form>
                 </td>
+
             </tr>
             {%endfor%}
         </tbody>
