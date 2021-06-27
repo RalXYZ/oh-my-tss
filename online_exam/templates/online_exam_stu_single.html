@@ -10,34 +10,18 @@
 {% block card_content %}
     <style type="text/css">
         .col_1{
-            width: 67%;
+            width: 200px;
         }
         .col_2{
-            width: 11%;
+            width: 200px;
         }
         .col_3{
-            width: 11%;
+            width: 200px;
         }
         .col_4{
-            width: 11%;
-        }
-        .mylabel{
-            font-size: 10px;
-            color: #3d443d;
-            background-color: lightgreen;
-            border-radius: 5px;
+            width: 200px;
         }
         .mybutton{
-            width: 60px;
-            text-align: center;
-            height: 30px;
-            background-color: #3399ff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.3em;
-        }
-        .mybutton2{
             width: 60px;
             text-align: center;
             height: 30px;
@@ -62,14 +46,6 @@
 
 
     <div id="block1">
-        <div id="online_exam">
-            <button onclick="window.location.href='../generate_paper'" id="mheader1">  </button>
-            <button onclick="window.location.href='../release_test'" id="mheader1">       </button>
-            <button onclick="window.location.href='../test_info'" id="mheader1">       </button>
-            <button id="mheader1" style="background-color: #3399ff; border-radius: 5px">       </button>
-            <br />
-        </div>
-        <hr size="10px"/>
         <button onclick="window.location.href='#'" id="mheader1">成绩分析</button>
         <!--<button id="mheader1" style="background-color: #3399ff; border-radius: 5px">学生成绩</button>-->
         <button onclick="window.location.href='../stu_single_select?student_id={{ student_id }}'"> 选择试卷 </button>

@@ -115,15 +115,17 @@
                 <th class="col_7"></th>
             </tr>
             {% for test in list %}
-            <tr>
-                <td class="col_1">{{ test.0 }}</td>
-                <td class="col_2">{{ test.1 }}</td>
-                <td class="col_3">{{ test.2 }}</td>
-                <td class="col_4"><button onclick="window.location.href='../combine_analysis?paperID={{ test.5 }}'" class="mybutton2">Analyse</button></td>
-                <td class="col_5">{{ test.3 }}</td>
-                <td class="col_6">{{ test.4 }}</td>
-                <td><button onclick="window.location.href='../stu_exam?test_id={{ test.0 }}'" class="mybutton">Join</button></td>
-            </tr>
+                <tr>
+                    <td class="col_1">{{ test.0 }}</td>
+                    <td class="col_2">{{ test.1 }}</td>
+                    <td class="col_3">{{ test.2 }}</td>
+                    <td class="col_4"><button onclick="window.location.href='../combine_analysis?paperID={{ test.5 }}'" class="mybutton2">Analyse</button></td>
+                    <td class="col_5">{{ test.3 }}</td>
+                    <td class="col_6">{{ test.4 }}</td>
+                    {% if test.6%}
+                        <td><button onclick="window.location.href='../stu_exam?test_id={{ test.0 }}'" class="mybutton">Join</button></td>
+                    {% endif %}
+                </tr>
             {% endfor %}
         </table>
     </div>

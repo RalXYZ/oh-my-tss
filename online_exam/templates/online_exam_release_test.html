@@ -29,14 +29,6 @@
         .col_7{
             width: 12%;
         }
-
-
-        .mylabel{
-            font-size: 10px;
-            color: #3d443d;
-            background-color: lightgreen;
-            border-radius: 5px;
-        }
         .mybutton{
             width: 60px;
             text-align: center;
@@ -70,46 +62,48 @@
     </style>
 
     <div id="block1">
-        <div id="online_exam">
-            <button onclick="window.location.href='../'" id="mheader1">进入题库</button>
-            <button onclick="window.location.href='../generate_paper'" id="mheader1">生成试卷</button>
-            <button id="mheader1" style="background-color: #3399ff; border-radius: 5px">发布测试</button>
-            <button onclick="window.location.href='../test_info'" id="mheader1">考试信息</button>
-            <button onclick="window.location.href='../paper_ana'" id="mheader1">试卷分析</button>
-            <br />
-        </div>
-        <hr size="10px"/>
-        <!--<button onclick="" class="button1">添加题目</button>
-        <button onclick="window.location.href='main'" class="button2">返回</button>-->
         <table class="mytable">
             <tr>
-                <th class="col_1" style="font-size: 20px">Exam</th>
-                <th class="col_2" style="font-size: 20px">Start</th>
-                <th class="col_3" style="font-size: 20px">End</th>
+                <th class="col_1" style="font-size: 30px">考试</th>
+                <th class="col_2" style="font-size: 30px">开始时间</th>
+                <th class="col_3" style="font-size: 30px">结束时间</th>
                 <th class="col_4"></th>
-                <th class="col_5" style="font-size: 20px">Course</th>
+                <th class="col_5" style="font-size: 30px">学科</th>
                 <th class="col_6"></th>
                 <th class="col_7"></th>
             </tr>
-            {#            {% for quiz in quizzes %}#}
-            {#             {% if  quiz.course.name in teacher.course %}#}
-            `<tr>
-            <td class="col_1">{{ quiz.name }}</td>
-            <td class="col_2"><div><input class="exam-time start" name="start_time" type="datetime-local" style="width:100%"></div></td>
-            <td class="col_3"><input class="exam-time start" name="end_time" type="datetime-local"></td>
-            <td class="col_4"><button onclick="window.location.href='#'" class="mybutton">Publish</button></td>
-            <td class="col_5"><label class="mylabel">{{ web_title }}</label></td>
-            <td class="col_6"><button onclick="window.location.href='#'" class="mybutton2">Delete</button></td>
-            <td class="clo_7"><button onclick="window.location.href='./paper_detail.html'" class="mybutton">Detail</button></td>
-            `  </tr>
-            {#            {% endif %}#}
-            {#            {%  empty %}#}
-            <tr>
-                {#            <td>暂无考试</td>#}
-            </tr>
-            {#            {% endfor %}#}
+            {% for item in tests %}
+                <form name = "test" action="./?paper_id={{ item.2 }}" method="post">
+                    {% csrf_token %}
+                    <input hidden name="paper_id" value="{{ item.2 }}">
+                    <input hidden name="course_id" value="{{ item.0 }}">
+                    <tr>
+                        <td class="col_1">{{ item.3.0 }}</td>
+                        <td class="col_2"><div><input class="exam-time start" name="start_time" type="datetime-local" style="width:100%"></div></td>
+                        <td class="col_3"><input class="exam-time end" name="end_time" type="datetime-local"></td>
+                        <td class="col_4"><button type="submit" class="mybutton">Publish</button></td>
+                        <td class="col_5"><p>{{ item.1.0 }}</p></td>
+                        <!--<td class="col_6"><button onclick="window.location.href='./test_delete/?paper_id={{ item.2 }}&teacher_id={{ teacher_id }}'" class="mybutton2">Delete</button></td>
+                <td class="clo_7"><button onclick="window.location.href='./teach_detail/?paper_id={{ item.2 }}&teacher_id={{ teacher_id }}&student_id={{ student_id }}'" class="mybutton">Detail</button></td>-->
+                        <td class="col_6"><button formaction="../test_delete/?paper_id={{ item.2 }}&teacher_id={{ teacher_id }}" class="mybutton2" name="delete">Delete</button></td>
+                        <td class="clo_7"><button formaction='../teach_detail/?paper_id={{ item.2 }}&teacher_id={{ teacher_id }}' class="mybutton">Detail</button></td>
+                    </tr>
+                </form>
+            {% endfor %}
+
 
 
         </table>
     </div>
+    <script language="JavaScript">
+        function Jump()
+        {
+            var action = test.action;
+            var url="./test_delete/?paper_id={{ item.2 }}&teacher_id={{ teacher_id }}" ;
+            test.action =  url;
+            test.submit();
+            test.action = action;
+
+        }
+    </script>
 {% endblock card_content %}

@@ -34,30 +34,17 @@
         margin-bottom: 10px;
     }
     .col_1{
-        width: 67%;
+        width: 74%;
         font-size: 20px;
         color: #3d443d;
     }
     .col_2{
-        width: 11%;
+        width: 13%;
         font-size: 20px;
         color: #3d443d;
     }
     .col_3{
-        width: 11%;
-    }
-    .col_4{
-        width: 11%;
-    }
-    .mybutton{
-        width: 60px;
-        text-align: center;
-        height: 30px;
-        background-color: #3399ff;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        padding: 0.3em;
+        width: 13%;
     }
     .mybutton2{
         width: 60px;
@@ -97,14 +84,12 @@
             <th class="col_1" style="font-size: 20px">Question</th>
             <th class="col_2" style="font-size: 20px">Subject</th>
             <th class="col_3"></th>
-            <th class="col_4"></th>
         </tr>
             {% for row in question_content %}
                 <tr>
                     <td class="col_1">{{ row.0 }}</td>
                     <td class="col_2">{{ course }}</td>
                     <td><button onclick="window.location.href='./del_question?nid={{ row.1 }}&course={{ course }}&chapter={{ chapter }}'" class="mybutton2">Delete</button></td>
-                    <td><button onclick="window.location.href='#'" class="mybutton">Change</button></td>
                 </tr>
             {% endfor %}
     </table>
