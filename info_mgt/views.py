@@ -480,6 +480,8 @@ def course_edit(req, option, in_course_name):
         if req.method == 'POST':
             course_name = req.POST.get('name')
             course_desc = req.POST.get('description')
+            if len(course_desc) >= 512:
+                course_desc = course_desc[0:512]
             course_credit = req.POST.get('credit')
             course_capacity = req.POST.get('capacity')
             course_duration = req.POST.get('duration')
