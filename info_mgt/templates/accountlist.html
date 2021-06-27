@@ -11,9 +11,9 @@
   <form method='POST'>
     {% csrf_token %}
     {% if last_search %}
-      <input class="search-input" type="text" name="name" value={{ last_search }} />
+      <input class="search-input" type="text" name="name" value={{ last_search }} maxlength="20" />
     {% else %}
-      <input class="search-input" type="text" name="name" placeholder="输入用户名.." />
+      <input class="search-input" type="text" name="name" placeholder="输入用户名.." maxlength="20" />
     {% endif %}
     <input class="search-submit" type="submit" name="提交" />
   </form>
