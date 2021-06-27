@@ -49,6 +49,23 @@
 </style>
 
 <div class="card-content">
+    <script>
+        function valcheck(num){
+            fill();
+            var c=document.getElementById("c").value;
+            var reg = new RegExp("^(\\d|[1-9]\\d|100)$");
+            if(!num.match(reg)||!c.match(reg)){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        function fill(){
+            var a=document.getElementById("a").value
+            var b=document.getElementById("b").value
+            document.getElementById("c").value=parseInt(a)+parseInt(b);
+        }
+    </script>
     <h5>教学班成绩          
             
             {%if is_submit%}
@@ -105,9 +122,10 @@
             <td>{{stu.id}}</td>
             <td>{{stu.name}}</td>
             <td>{{stu.major}}</td>
-            <td><input type="text" value="{{stu.class_performance}}" name="classperformance_{{stu.id}}"></td>
-            <td><input type="text" value="{{stu.exam_result}}" name="examresult_{{stu.id}}"></td>
-            <td><input type="text" value="{{stu.grade}}" name="{{stu.id}}"></td>
+            <td><input id="a" type="text" value="{{stu.class_performance}}" name="classperformance_{{stu.id}}" required="required" maxlength="3" onkeyup="value=valcheck(value)?value:'',fill()"></td>
+            <td><input id="b" type="text" value="{{stu.exam_result}}" name="examresult_{{stu.id}}" required="required" maxlength="3" onkeyup="value=valcheck(value)?value:'',fill()"></td>
+            <td><input id="c" type="text" value="{{stu.grade}}" name="{{stu.id}}" required="required" maxlength="3"></td>
+
             <!-- <td>{{stu.grade}}</td> -->
             <!-- <td>{{stu.gp}}</td> -->
         </tr>
@@ -120,7 +138,11 @@
             <td>5</td>
         </tr> -->
 
-    </table>
+    </table></br>
+    {%if is_submit%}
+    <label style="font-size: 18px;font-weight: bold; color: #0097a7;">修改原因：</label>
+    <input type="text" name="reason" style="width: 100%;" required="required" maxlength="100">
+    {%endif%}
     </form>
 </div>
 

@@ -498,13 +498,16 @@ def change_submit(request):
                 print(tempdict)
                 gradelist.append({'stu_id':tempdict['stu_id'],'class_performance':tempdict['class_performance'],'exam_result':tempdict['exam_result'],'final_result':tempdict['final_result']})
                 i+=1   
+        if (k=='reason'):
+            tempreason=v
+
     #print(gradelist)
     for result in gradelist:
         res = ChangeResult.objects.values().filter(Class=classid).filter(student=result['stu_id']).filter(permit=0)
         if res:
-            res.update(permit=0, submit_time=time,reason='',class_performance=result['class_performance'],exam_result=result['exam_result'],final_result=result['final_result'])
+            res.update(permit=0, submit_time=time,reason=tempreason,class_performance=result['class_performance'],exam_result=result['exam_result'],final_result=result['final_result'])
         else:
-            res = ChangeResult.objects.create(permit=0, submit_time=time,reason='',class_performance=result['class_performance'],exam_result=result['exam_result'],final_result=result['final_result'])
+            res = ChangeResult.objects.create(permit=0, submit_time=time,reason=tempreason,class_performance=result['class_performance'],exam_result=result['exam_result'],final_result=result['final_result'])
             stu = Student.objects.filter(id=result['stu_id']).first()
             cour = Course.objects.filter(id=courseid).first()
             clas = Class.objects.filter(id=classid).first()
