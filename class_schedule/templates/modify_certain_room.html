@@ -75,7 +75,7 @@
           </div>
           <br>
           门牌号：<!--{{ original_info.room_number }}-->
-          <input maxlength="10" type="number" placeholder="请输入完整门牌号" name="room_number" id="room_number" value="{{ original_info.room_number }}" required>
+          <input maxlength="10" type="number" min="1" placeholder="请输入完整门牌号" name="room_number" id="room_number" value="{{ original_info.room_number }}" required>
           教室类型：<!--{{ original_info.room_type }}-->
           <br><br>
           <div>
