@@ -8,7 +8,7 @@ from django.urls import reverse
 import weasyprint
 from django.template.loader import render_to_string
 
-from info_mgt.models import Campus
+from info_mgt.models import Campus, Class, Major
 from oh_my_tss.errview import err_403, err_404, err_50x
 from .genetic import *
 from .models import Classroom, ClassHasRoom, Application, Building
