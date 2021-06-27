@@ -45,14 +45,22 @@ def info_view(req):
 
 def info_view_with_username(req, username):
     try:
-        user = models.User.objects.get(username=username)
+        this_user = models.User.objects.get(username=username)
     except:
         return err_404(req)
+
+    try:
+        avatar = models.Avatar.objects.get(user=this_user)
+        res_url = '/static/media/img/' + str(avatar.avatar.name)
+    except ObjectDoesNotExist:
+        res_url = '/static/media/img/' + 'default.png'
+        pass
 
     return render(req, 'info_view.html', {
         'web_title': '个人信息',
         'page_title': '个人信息',
-        'request_user': user,
+        'request_user': this_user,
+        'url': res_url
     })
 
 
