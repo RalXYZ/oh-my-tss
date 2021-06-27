@@ -64,7 +64,7 @@ def info_view_with_username(req, username):
     })
 
 
-def info_edit(req):
+def info_edit(req, username='#'):
     def is_valid(req):
         flag1 = True
         flag2 = False
@@ -83,7 +83,7 @@ def info_edit(req):
             return False
 
     if req.method == 'POST':
-        if is_valid(req):
+        if (is_valid(req) and username == req.user.username) or (req.user.has_perm('info_mgt.change_student') and req.user.has_perm('info_mgt.change_teacher')):
             new_username = req.POST['username']
             if new_username is None:
                 new_username = req.user.username

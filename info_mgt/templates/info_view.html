@@ -40,6 +40,6 @@
             </tr>
         </thead>
     </table>
-    <a class="edit-button" href="{% url 'info_mgt:info_edit' %}" title="用户信息修改"> 修改 </a>
+    <a class="edit-button" href="{% url 'info_mgt:info_edit' request_user.username %}" title="用户信息修改"> 修改 </a>
 </div>
 {% endblock card_content %}
