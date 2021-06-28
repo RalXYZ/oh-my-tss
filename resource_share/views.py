@@ -131,10 +131,10 @@ def rsdetail(request):
     classid=classID
     queryset = Source.objects.filter(Class=classID).values_list('id', flat=True)    #获取课程id对应的课程文件夹
     if not queryset:
-        file_path="media"+"\\"+"SEF"+"\\"+str(classID)
+        file_path="media"+"/"+"SEF"+"/"+str(classID)
         os.mkdir(file_path)
-        os.mkdir(file_path+"\\"+"assignment")
-        os.mkdir(file_path+"\\"+"resource")
+        os.mkdir(file_path+"/"+"assignment")
+        os.mkdir(file_path+"/"+"resource")
         res=Source.objects.create(file_path=file_path,file_name=classID, file_type="2",parent=1)
         classes = Class.objects.filter(id = classid).first()
         courselist=list(Class.objects.values('course_id').filter(id=classid))
@@ -148,11 +148,11 @@ def rsdetail(request):
         res.user.add(user)
         res=list(Source.objects.values('id').filter(Class=classid).filter(file_name=classID).filter(parent=1))
         parentid=res[0]['id']
-        ass=Source.objects.create(file_path=file_path+"\\"+"assignment",file_name="assignment",file_type="2",parent=parentid)
+        ass=Source.objects.create(file_path=file_path+"/"+"assignment",file_name="assignment",file_type="2",parent=parentid)
         ass.course.add(course)
         ass.Class.add(classes)
         ass.user.add(user)
-        resource=Source.objects.create(file_path=file_path+"\\"+"resource",file_name="resource",file_type="2",parent=parentid)
+        resource=Source.objects.create(file_path=file_path+"/"+"resource",file_name="resource",file_type="2",parent=parentid)
         resource.course.add(course)
         resource.Class.add(classes)
         resource.user.add(user)
@@ -380,7 +380,7 @@ def rename(request):
     oldpath=sourceinfo[0]['file_path']
     newpath=oldpath.replace(oldname,newname)
     rootpath=os.getcwd()
-    rootpath+="\\"
+    rootpath+="/"
     rootpath+=oldpath
     rootpath=rootpath.replace(oldname,"")
     print(rootpath)
@@ -401,7 +401,7 @@ def loopdelete(request,fileid,parent):
     filename=filelist[0]['file_name']
     rewriteroot(request)
     rootpath=os.getcwd()
-    rootpath+="\\"
+    rootpath+="/"
     rootpath+=filepath
     des=rootpath
     rootpath=rootpath.replace(filename,"")
@@ -661,7 +661,7 @@ def hwlist(request):
     count = 0
     for ass in asslist:
         if submit:
-            if submit[ass['id']]==True:
+            if (ass['id']) in submit.keys():
                 ifsubmit = "已提交"
             else:
                 ifsubmit = "未提交"
