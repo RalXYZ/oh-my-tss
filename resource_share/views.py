@@ -239,16 +239,21 @@ def up(request):
     for chunk in file.chunks():
         destination.write(chunk)
     destination.close()
-    res = Source.objects.create(file_path=file_path, file_size=file.size, file_name=file.name, file_type='1', parent=folder_id,canbesearched=True)
-    classes = Class.objects.filter(id = classid).first()
-    courselist=list(Class.objects.values('course_id').filter(id=classid))
-    courseid=courselist[0]['course_id']
-    course = Course.objects.filter(id=courseid).first()
-    userid=request.user.id
-    user = User.objects.filter(id=userid).first()
-    res.course.add(course)
-    res.Class.add(classes)
-    res.user.add(user)
+    res = list(Source.objects.values().filter(file_path=file_path, file_name=file.name, file_type='1', parent=folder_id,canbesearched=True))
+    if not res:
+        res = Source.objects.create(file_path=file_path, file_size=file.size, file_name=file.name, file_type='1', parent=folder_id,canbesearched=True)
+        classes = Class.objects.filter(id = classid).first()
+        courselist=list(Class.objects.values('course_id').filter(id=classid))
+        courseid=courselist[0]['course_id']
+        course = Course.objects.filter(id=courseid).first()
+        userid=request.user.id
+        user = User.objects.filter(id=userid).first()
+        res.course.add(course)
+        res.Class.add(classes)
+        res.user.add(user)
+    else:
+        res=Source.objects.filter(file_path=file_path, file_name=file.name, file_type='1', parent=folder_id,canbesearched=True)
+        res.update(file_size=file.size)
     #print(res)
     if folder_id == request.session['cur_folderID']:
         return_page = "/resource_share/resource_share_detail/?folder=" + str(folder_id)
@@ -316,6 +321,7 @@ def return_share_index(request):
     return_page = "/resource_share/"
     return redirect(return_page)
 
+
 @require_POST
 def up_assignment(request):
     userid=request.user.id
@@ -335,17 +341,21 @@ def up_assignment(request):
     for chunk in file.chunks():
         destination.write(chunk)
     destination.close()
-
-    res1 = Source.objects.create(file_path=file_path, file_size=file.size, file_name=file.name, parent=folder_id)    #先存文件，得到文件的ID
-    res1.user.add(userid)
-    res2 = AssignmentGrade.objects.create(is_submit=True) #存作业
-    print(res1) 
-    res2.student.add(student_id)
-    res2.course.add(courseID)
-    res2.Class.add(classID)
-    res2.Assignment.add(homework_id)
-    res2.file.add(res1.id)
+    res1 = list(Source.objects.values().filter(file_path=file_path,file_name=file.name, parent=folder_id))
+    if not res1:
+        res1 = Source.objects.create(file_path=file_path, file_size=file.size, file_name=file.name, parent=folder_id)    #先存文件，得到文件的ID
+        res1.user.add(userid)
+        res2 = AssignmentGrade.objects.create(is_submit=True) #存作业
+        print(res1) 
+        res2.student.add(student_id)
+        res2.course.add(courseID)
+        res2.Class.add(classID)
+        res2.Assignment.add(homework_id)
+        res2.file.add(res1.id)
     # print(list(res2))
+    else:
+        res1=Source.objects.values().filter(file_path=file_path,file_name=file.name, parent=folder_id)
+        res1.update(file_size=file.size)
     return_page = "/resource_share/homework_detail"
     print(return_page)
     return redirect(return_page)
