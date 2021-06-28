@@ -248,14 +248,14 @@ def account_edit(req, username='#'):
                 result_2 = 1
                 if new_major is not None:
                     this_user = models.User.objects.get(username=username)
-                    if Student.objects.get(user_id=this_user.id):
+                    if Student.objects.filter(user_id=this_user.id):
                         query_set = Student.objects.filter(user_id=this_user.id)
                         try:
                             this_major = models.Major.objects.get(name=new_major)
                             result_1 = query_set.update(major_id=this_major.id, user_id=this_user.id)
                         except:
                             pass
-                    elif Teacher.objects.get(user_id=this_user.id):
+                    elif Teacher.objects.filter(user_id=this_user.id):
                         query_set = Teacher.objects.filter(user_id=this_user.id)
                         try:
                             this_major = models.Department.objects.get(name=new_major)
@@ -326,13 +326,19 @@ def account_add(req):
             except:
                 flag2 = False
         if req.POST['role'] == 'student' and len(req.POST['major'])!=0:
-            query = models.Major.objects.filter(name=req.POST['major'])
-            if query is not None:
-                flag3 = True
+            try:
+                query = models.Major.objects.filter(name=req.POST['major'])
+                if query is not None:
+                    flag3 = True
+            except:
+                flag3 = False
         elif req.POST['role'] == 'teacher' and len(req.POST['major'])!=0:
-            query = models.Department.objects.filter(name=req.POST['major'])
-            if query is not None:
-                flag3 = True
+            try:
+                query = models.Department.objects.filter(name=req.POST['major'])
+                if query is not None:
+                    flag3 = True
+            except:
+                flag3 = False
         if flag1 and flag2 and flag3:
             return True
         else:
