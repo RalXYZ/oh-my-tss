@@ -87,16 +87,16 @@ def info_edit(req, username='#'):
             if is_valid(req):
                 this_user = models.User.objects.get(username=username)
                 new_username = req.POST['username']
-                if new_username is None or len(new_username)==0:
+                if new_username is None:
                     new_username = this_user.username
                 new_last_name = req.POST['last_name']
-                if new_last_name is None or len(new_last_name)==0:
+                if new_last_name is None:
                     new_last_name = this_user.last_name
                 new_first_name = req.POST['first_name']
-                if new_first_name is None or len(new_first_name)==0:
+                if new_first_name is None:
                     new_first_name = this_user.first_name
                 new_email = req.POST['email']
-                if new_email is None or len(new_email)==0:
+                if new_email is None:
                     new_email = this_user.email
                 new_avatar = req.FILES.get('avatar')
 
@@ -117,7 +117,7 @@ def info_edit(req, username='#'):
                 except:
                     query = None
 
-                if query is None and len(new_avatar)!=0:
+                if query is None and new_avatar is not None:
                     if username != '#':
                         temp = models.User.objects.get(username=username)
                         result2 = models.Avatar.objects.create(user=temp, avatar=new_avatar)
@@ -127,7 +127,7 @@ def info_edit(req, username='#'):
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
-                elif query is not None and len(new_avatar)!=0:
+                elif query is not None and new_avatar is not None:
                     result2 = query.update(avatar=new_avatar)
                     f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
@@ -139,7 +139,7 @@ def info_edit(req, username='#'):
                     query_set = models.User.objects.filter(username=username)
                 else:
                     query_set = models.User.objects.filter(username=req.user.username)
-                if req.POST['password'] is not None and len(req.POST['password'])!=0:
+                if req.POST['password'] is not None:
                     result = query_set.update(username=new_username, last_name=new_last_name,
                                               first_name=new_first_name, email=new_email, password=make_password(password1))
                 else:
@@ -188,16 +188,16 @@ def account_edit(req, username='#'):
             if is_valid(req):
                 this_user = models.User.objects.get(username=username)
                 new_username = req.POST['username']
-                if new_username is None or len(new_username)==0:
+                if new_username is None:
                     new_username = this_user.username
                 new_last_name = req.POST['last_name']
-                if new_last_name is None or len(new_last_name)==0:
+                if new_last_name is None:
                     new_last_name = this_user.last_name
                 new_first_name = req.POST['first_name']
-                if new_first_name is None or len(new_first_name)==0:
+                if new_first_name is None:
                     new_first_name = this_user.first_name
                 new_email = req.POST['email']
-                if new_email is None or len(new_email)==0:
+                if new_email is None:
                     new_email = this_user.email
                 new_avatar = req.FILES.get('avatar')
                 new_major = req.POST['major']
@@ -222,7 +222,7 @@ def account_edit(req, username='#'):
                     query = None
 
 
-                if query is None and len(new_avatar)!=0:
+                if query is None and new_avatar is not None:
                     try:
                         result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
                         f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
@@ -231,7 +231,7 @@ def account_edit(req, username='#'):
                         f.close()
                     except:
                         pass
-                elif query is not None and len(new_avatar)!=0:
+                elif query is not None and new_avatar is not None:
                     try:
                         result2 = query.update(avatar=new_avatar)
                         f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
@@ -260,7 +260,7 @@ def account_edit(req, username='#'):
                             pass
 
                 query_set = models.User.objects.filter(username=username)
-                if req.POST['password'] is not None and len(req.POST['password'])!=0:
+                if req.POST['password'] is not None:
                     result_0 = query_set.update(username=new_username, last_name=new_last_name,
                                               first_name=new_first_name, email=new_email, password=make_password(password1))
                 else:
@@ -316,8 +316,11 @@ def account_add(req):
         if query is not None:
             flag1 = False
         if req.POST['password'] == req.POST['password_again'] and req.POST['password'] is not None and req.POST['password_again'] is not None:
-            if len(req.POST['password'])!=0 and len(req.POST['password_again'])!=0:
-                flag2 = True
+            try:
+                if len(req.POST['password'])!=0 and len(req.POST['password_again'])!=0:
+                    flag2 = True
+            except:
+                flag2 = False
         if req.POST['role'] == 'student':
             query = models.Major.objects.get(name=req.POST['major'])
             if query is not None:
