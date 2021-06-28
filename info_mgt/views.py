@@ -576,7 +576,7 @@ def course_edit(req, option, in_course_name):
                     'edit_result': True if n_updates != 0 else False
                 })
             elif option == 'new':
-                if len(course_name) > 0 and len(course_desc) > 0 and course_credit > 0 and course_capacity > 0 and len(course_duration) > 0:
+                if len(course_name) > 0 and len(course_desc) > 0 and int(course_credit) > 0 and int(course_capacity) > 0 and len(course_duration) > 0:
                     ins = models.Course.objects.create(
                         name=course_name,
                         description=course_desc,
