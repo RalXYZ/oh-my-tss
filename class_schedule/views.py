@@ -366,9 +366,9 @@ def manipulate_schedule(request):  # 打开手动调课页面
             elif type1 == 'skxq':  # 查询上课校区
                 campus_id = request.GET.get('campus1')
                 try:
-                    classroom_list = Classroom.objects.filter(campus_id=campus_id)
+                    classroom_list = Classroom.objects.filter(building__campus_id=campus_id)
                     class_list_1 = Class.objects.filter(classhasroom__classroom__in=classroom_list, year=2021,
-                                                        term__in={'AU', 'WI', 'AW'})
+                                                    term__in={'AU', 'WI', 'AW'})
                 except:
                     return err_50x(request, 500)
             type2 = request.GET.get('cx_cxlb_2')
@@ -408,7 +408,7 @@ def manipulate_schedule(request):  # 打开手动调课页面
             elif type2 == 'skxq':  # 查询上课校区
                 campus_id = request.GET.get('campus2')
                 try:
-                    classroom_list = Classroom.objects.filter(campus_id=campus_id)
+                    classroom_list = Classroom.objects.filter(building__campus_id=campus_id)
                     class_list_2 = Class.objects.filter(classhasroom__classroom__in=classroom_list, year=2021,
                                                         term__in={'AU', 'WI', 'AW'})
                 except:
