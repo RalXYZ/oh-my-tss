@@ -26,6 +26,7 @@ def index(req):
 
 
 def info_view(req):
+<<<<<<< HEAD
     if req.user.has_perm('info_mgt.view_student') or req.user.has_perm('info_mgt.view_teacher'):
         try:
             avatar = models.Avatar.objects.get(user=req.user)
@@ -42,6 +43,24 @@ def info_view(req):
         })
     else:
         return err_403(req)
+=======
+
+    try:
+        avatar = models.Avatar.objects.get(user=req.user)
+        res_url = '/static/media/img/' + str(avatar.avatar.name)
+    except ObjectDoesNotExist:
+        res_url = '/static/media/img/' + 'default.png'
+        pass
+    except:
+        return err_403(req)
+
+    return render(req, 'info_view.html', {
+        'web_title': '个人信息',
+        'page_title': '个人信息',
+        'request_user': req.user,
+        'url': res_url
+    })
+>>>>>>> 9ce8194... not login info_view
 
 
 def info_view_with_username(req, username):
