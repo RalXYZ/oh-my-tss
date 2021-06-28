@@ -29,9 +29,9 @@ def info_view(req):
     if req.user.has_perm('info_mgt.view_student') or req.user.has_perm('info_mgt.view_teacher'):
         try:
             avatar = models.Avatar.objects.get(user=req.user)
-            res_url = '/static/media/img/' + str(avatar.avatar.name)
+            res_url = '/media/img/' + str(avatar.avatar.name)
         except ObjectDoesNotExist:
-            res_url = '/static/media/img/' + 'default.png'
+            res_url = '/media/img/' + 'default.png'
             pass
 
         return render(req, 'info_view.html', {
