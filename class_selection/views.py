@@ -457,8 +457,9 @@ def stu_select(req, null=None):
             'identity': identity
         })
     time_zero = models.sel_time.objects.get(type=0)
+    time_one = models.sel_time.objects.get(type=1)
     timenow = timezone.now()
-    if (str(timenow)[0:19] < str(time_zero.start)[0:19] or str(timenow)[0:19] > str(time_zero.end)[0:19]):
+    if ((str(timenow)[0:19] < str(time_zero.start)[0:19] or str(timenow)[0:19] > str(time_zero.end)[0:19]) and (str(timenow)[0:19] < str(time_one.start)[0:19] or str(timenow)[0:19] > str(time_one.end)[0:19])):
         return render(req, 'stu_select.html', {
             'web_title': '课程选择',
             'page_title': '课程选择',
