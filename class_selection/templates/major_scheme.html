@@ -7,7 +7,15 @@
 {% endblock extra_head %}
 
 {% block card_content %}
-
+<script>
+function check(){
+    {% if identity == 2 %}
+        window.alert('未登陆无法查看培养计划，请先登陆！');
+        window.history.back(-1);
+    {% endif %}
+}
+    check();
+</script>
 <div id="class_selection" class="card-content">
 <form method="POST" action="#/" style="margin-bottom:30px">
     {% csrf_token %}
