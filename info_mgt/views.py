@@ -106,7 +106,7 @@ def info_edit(req, username='#'):
 
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
-                this_user = models.User.objects.get(username=new_username)
+                this_user = models.User.objects.filter(username=new_username)
                 if this_user and new_username != username:
                     return render(req, 'info_edit.html', {
                         'web_title': '个人信息修改', 'page_title': '个人信息修改', 'request_user': req.user,
@@ -208,7 +208,7 @@ def account_edit(req, username='#'):
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
 
-                this_user = models.User.objects.get(username=new_username)
+                this_user = models.User.objects.filter(username=new_username)
                 if this_user and new_username != username:
                     return render(req, 'account_edit.html', {
                         'web_title': '用户信息修改',
@@ -325,12 +325,12 @@ def account_add(req):
                     flag2 = True
             except:
                 flag2 = False
-        if req.POST['role'] == 'student':
-            query = models.Major.objects.get(name=req.POST['major'])
+        if req.POST['role'] == 'student' and len(req.POST['major'])!=0:
+            query = models.Major.objects.filter(name=req.POST['major'])
             if query is not None:
                 flag3 = True
-        elif req.POST['role'] == 'teacher':
-            query = models.Department.objects.get(name=req.POST['major'])
+        elif req.POST['role'] == 'teacher' and len(req.POST['major'])!=0:
+            query = models.Department.objects.filter(name=req.POST['major'])
             if query is not None:
                 flag3 = True
         if flag1 and flag2 and flag3:
