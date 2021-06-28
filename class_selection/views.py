@@ -109,7 +109,7 @@ def admin_class(req):  # 管理员选退课
                     })
                 else:
                     for i in classroom:
-                        if i.day is None or i.start_at is None or i.end_at is None:
+                        if i.day is None or i.start_at is None or i.end_at is None or i.classroom_id is None:
                             class_non = True
 
                             return render(req, 'admin_class.html', {
@@ -586,7 +586,7 @@ def stu_select(req, null=None):
                 }
             else:
                 for i in classroom:
-                    if i.day is null or i.start_at is null or i.end_at is null:
+                    if i.day is null or i.start_at is null or i.end_at is null or i.classroom_id is None:
                         class_non = True
                         return_dict = {
                             'web_title': '课程选择',
