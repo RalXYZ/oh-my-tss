@@ -248,14 +248,14 @@ def account_edit(req, username='#'):
                 result_2 = 1
                 if new_major is not None:
                     this_user = models.User.objects.get(username=username)
-                    if Student.objects.filter(user_id=this_user.id):
+                    if Student.objects.get(user_id=this_user.id):
                         query_set = Student.objects.filter(user_id=this_user.id)
                         try:
                             this_major = models.Major.objects.get(name=new_major)
                             result_1 = query_set.update(major_id=this_major.id, user_id=this_user.id)
                         except:
                             pass
-                    elif Teacher.objects.filter(user_id=this_user.id):
+                    elif Teacher.objects.get(user_id=this_user.id):
                         query_set = Teacher.objects.filter(user_id=this_user.id)
                         try:
                             this_major = models.Department.objects.get(name=new_major)
