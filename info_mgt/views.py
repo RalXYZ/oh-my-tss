@@ -25,43 +25,47 @@ def index(req):
     })
 
 
-# TODO: those following pages' templates are not implemented yet.
-
 def info_view(req):
-    try:
-        avatar = models.Avatar.objects.get(user=req.user)
-        res_url = '/media/img/' + str(avatar.avatar.name)
-    except ObjectDoesNotExist:
-        res_url = '/media/img/' + 'default.png'
-        pass
+    if req.user.has_perm('info_mgt.view_student') or req.user.has_perm('info_mgt.view_teacher'):
+        try:
+            avatar = models.Avatar.objects.get(user=req.user)
+            res_url = '/static/media/img/' + str(avatar.avatar.name)
+        except ObjectDoesNotExist:
+            res_url = '/static/media/img/' + 'default.png'
+            pass
 
-    return render(req, 'info_view.html', {
-        'web_title': '个人信息',
-        'page_title': '个人信息',
-        'request_user': req.user,
-        'url': res_url
-    })
+        return render(req, 'info_view.html', {
+            'web_title': '个人信息',
+            'page_title': '个人信息',
+            'request_user': req.user,
+            'url': res_url
+        })
+    else:
+        return err_403(req)
 
 
 def info_view_with_username(req, username):
-    try:
-        this_user = models.User.objects.get(username=username)
-    except:
-        return err_404(req)
+    if req.user.has_perm('info_mgt.view_student') or req.user.has_perm('info_mgt.view_teacher'):
+        try:
+            this_user = models.User.objects.get(username=username)
+        except:
+            return err_404(req)
 
-    try:
-        avatar = models.Avatar.objects.get(user=this_user)
-        res_url = '/static/media/img/' + str(avatar.avatar.name)
-    except ObjectDoesNotExist:
-        res_url = '/static/media/img/' + 'default.png'
-        pass
+        try:
+            avatar = models.Avatar.objects.get(user=this_user)
+            res_url = '/static/media/img/' + str(avatar.avatar.name)
+        except ObjectDoesNotExist:
+            res_url = '/static/media/img/' + 'default.png'
+            pass
 
-    return render(req, 'info_view.html', {
-        'web_title': '个人信息',
-        'page_title': '个人信息',
-        'request_user': this_user,
-        'url': res_url
-    })
+        return render(req, 'info_view.html', {
+            'web_title': '个人信息',
+            'page_title': '个人信息',
+            'request_user': this_user,
+            'url': res_url
+        })
+    else:
+        return err_403(req)
 
 
 def info_edit(req, username='#'):

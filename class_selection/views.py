@@ -324,7 +324,15 @@ def stu_detail(req, class_id):
 
 
 def major_scheme(request):
-
+    current_user_group = request.user.groups.first()
+    if not current_user_group:
+        identity = 2
+        return render(request, 'major_scheme.html', {
+            'web_title': '课程选择',
+            'page_title': '课程选择',
+            'request_user': request.user,
+            'identity': identity
+        })
     return_dict = {
         'web_title': '培养方案',
         'page_title': '培养方案',
