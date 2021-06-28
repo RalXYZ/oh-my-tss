@@ -209,7 +209,48 @@ def account_edit(req, username='#'):
                 password2 = req.POST['password_again']
 
                 this_user = models.User.objects.filter(username=new_username)
+
                 if this_user and new_username != username:
+                    return render(req, 'account_edit.html', {
+                        'web_title': '用户信息修改',
+                        'page_title': '用户信息修改',
+                        'request_user': req.user,
+                        'forms': SelfInfoForm(),
+                        'edit': False,
+                        'edit_result': True,
+                        'dup': True
+                    })
+
+                this_user = models.User.objects.get(username=username)
+                if Student.objects.filter(user_id=this_user.id):
+                    query_set = Student.objects.filter(user_id=this_user.id)
+                    try:
+                        this_major = models.Major.objects.get(name=new_major)
+                    except:
+                        return render(req, 'account_edit.html', {
+                            'web_title': '用户信息修改',
+                            'page_title': '用户信息修改',
+                            'request_user': req.user,
+                            'forms': SelfInfoForm(),
+                            'edit': False,
+                            'edit_result': True,
+                            'dup': True
+                        })
+                elif Teacher.objects.filter(user_id=this_user.id):
+                    query_set = Teacher.objects.filter(user_id=this_user.id)
+                    try:
+                        this_major = models.Department.objects.get(name=new_major)
+                    except:
+                        return render(req, 'account_edit.html', {
+                            'web_title': '用户信息修改',
+                            'page_title': '用户信息修改',
+                            'request_user': req.user,
+                            'forms': SelfInfoForm(),
+                            'edit': False,
+                            'edit_result': True,
+                            'dup': True
+                        })
+                else:
                     return render(req, 'account_edit.html', {
                         'web_title': '用户信息修改',
                         'page_title': '用户信息修改',
