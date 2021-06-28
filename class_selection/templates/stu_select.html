@@ -32,6 +32,8 @@ function check(){
         window.alert('查询失败，该老师不存在！');
     {% elif conflict_err %}
         window.alert('选课失败，时间冲突！');
+    {% elif class_non %}
+        window.alert('选课失败，该教学班暂未安排时间！');
     {% endif %}
 }
     check();
@@ -74,6 +76,7 @@ function check(){
             <th>课程编号</th>
             <th>课程名称</th>
             <th>授课教师</th>
+            <th>教学班编号</th>
             <th>上课时间</th>
             <th>上课地点</th>
             <th>已选人数/总容量</th>
@@ -89,6 +92,7 @@ function check(){
             <td>{{ i.course_id }}</td>
             <td>{{ i.course.name }}</td>
             <td>{{ i.teacher.last_name }}&nbsp;{{ i.teacher.first_name }} </td>
+            <td>{{ i.id }}</td>
             <td>
             {% for j in i.classhasroom_set.all %}
                 <div>

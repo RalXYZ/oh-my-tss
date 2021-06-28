@@ -26,6 +26,8 @@ function check(){
         window.alert('选课失败，该学生不存在!');
     {% elif non_class %}
         window.alert('选课失败，该课程不存在!');
+    {% elif class_non %}
+        window.alert('选课失败，该课程暂未安排时间!');
     {% elif space_out %}
         window.alert('选课失败，容量不足!');
     {% elif delete_check %}
