@@ -247,7 +247,7 @@ def account_edit(req, username='#'):
 
                 result_2 = 1
                 if new_major is not None:
-                    this_user = models.User.objects.get(username=new_username)
+                    this_user = models.User.objects.get(username=username)
                     if Student.objects.get(user_id=this_user.id):
                         query_set = Student.objects.filter(user_id=this_user.id)
                         try:
