@@ -1,0 +1,85 @@
+{% extends 'skeleton.html' %} 
+
+{% load static %} 
+{% load material_form %} 
+
+{% block extra_head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'info_mgt/css/info_mgt.css' %}"
+/>
+{% endblock extra_head %} 
+
+{% block card_content %}
+<div id="grade_mgt" class="card-content">
+    <label style="font-size: 25px;">成绩修改申请列表</label>
+    <table style="margin-top: 10px;">
+    <tbody>
+        <tr>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>教师</th>
+            <!--th>教学班</th>
+            <th>修改理由</th-->
+            <th>申请时间</th>
+            <th>操作</th>
+        </tr>
+        {%if result%}
+        {%for res in result%}
+        <tr>
+            <td>{{res.courseid}}</td>
+            <td>{{res.coursename}}</td>
+            <td>{{res.teachername}}</td>
+            
+            
+            <td>{{res.localtime}}</td>
+            <td>
+                <form action="{%url 'operator_admin'%}" method="POST"> 
+                    
+                    <input type="submit" class="btn btn-small btn-sm" style="padding: 5px;height: 25px;line-height: 1px;background-color: rgba(0,191,255,1);font-size: 14px;" value="同意" name={{res.Class}}>
+                    <input type="submit" class="btn btn-small btn-sm" style="padding: 5px;height: 25px;line-height: 1px;background-color: rgba(0,191,255,1);font-size: 14px;" value="不同意" name={{res.Class}}>
+                    {%csrf_token%}
+                </form> 
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                课程学期：{{res.year}}年{{res.term}}学期&nbsp;
+                {%for time1 in res.time%}
+                周{{time1.date}}
+                {%for times in time1.timespan%}
+                {{times}}
+                {%endfor%}
+                节、
+                {%endfor%}
+            </td>
+        </tr>        
+        <tr>
+            <td colspan="5">
+                修改理由：{{res.reason}}
+            </td>
+        </tr>        
+        {%endfor%}
+        {%endif%}
+
+    </tbody>
+    </table>
+
+    <!--div class="float-new-btn"></div-->
+    <div class="table-foot-bar">上一页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 - 6, 共 1 页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下一页</div>
+    </div>
+{% endblock card_content %}
+
+
+
+<html>
+<body>
+<div>
+    
+    <table>
+    
+    </table>
+</div>
+</body>
+</html>

@@ -35,6 +35,16 @@
             <i class="material-icons">warning</i>
             修改失败！
             </div>
+        {% elif dup == True %}
+            <div class="err-msg">
+            <i class="material-icons">warning</i>
+            用户名重复！
+            </div>
+        {% elif dup == False %}
+            <div class="err-msg">
+            <i class="material-icons">warning</i>
+            院系错误！
+            </div>
         {% endif %}
     </div>
 {% endblock card_content %}

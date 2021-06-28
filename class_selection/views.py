@@ -97,6 +97,28 @@ def admin_class(req):  # 管理员选退课
                     'space_out': space_out,
                 })
             else:
+                class_non = False
+                classroom = models.ClassHasRoom.objects.filter(Class=classes)
+                if len(classroom) == 0:
+                    class_non = True
+                    return render(req, 'admin_class.html', {
+                        'web_title': '手动选课',
+                        'page_title': '手动选课',
+                        'request_user': req.user,
+                        'class_non': class_non,
+                    })
+                else:
+                    for i in classroom:
+                        if i.day is None or i.start_at is None or i.end_at is None:
+                            class_non = True
+
+                            return render(req, 'admin_class.html', {
+                                'web_title': '手动选课',
+                                'page_title': '手动选课',
+                                'request_user': req.user,
+                                'class_non': class_non,
+                            })
+
                 myclass_list = models.StuHasClass.objects.filter(Student=students)  # 加的判断冲突选课的
                 myclass = [["" for i in range(7)] for i in range(13)]
                 for i in range(0, len(myclass_list)):
@@ -324,7 +346,15 @@ def stu_detail(req, class_id):
 
 
 def major_scheme(request):
-
+    current_user_group = request.user.groups.first()
+    if not current_user_group:
+        identity = 2
+        return render(request, 'major_scheme.html', {
+            'web_title': '课程选择',
+            'page_title': '课程选择',
+            'request_user': request.user,
+            'identity': identity
+        })
     return_dict = {
         'web_title': '培养方案',
         'page_title': '培养方案',
@@ -543,12 +573,44 @@ def stu_select(req, null=None):
             classes.save()
             models.StuHasClass.objects.get(Student=students, Class=classes).delete()
         else:
-            conflict_err = False
-            space_out = False
-            myclass_list = models.StuHasClass.objects.filter(Student=students)  # 加的判断冲突选课的
-            myclass = [["" for i in range(7)] for i in range(13)]
-            for i in range(0, len(myclass_list)):
-                myclasstime = models.ClassHasRoom.objects.filter(Class=myclass_list[i].Class)
+            class_non = False
+            classroom=models.ClassHasRoom.objects.filter(Class=classes)
+            if len(classroom)==0:
+                class_non = True
+                return_dict = {
+                    'web_title': '课程选择',
+                    'page_title': '课程选择',
+                    'request_user': req.user,
+                    'identity': identity,
+                    'class_non': class_non,
+                }
+            else:
+                for i in classroom:
+                    if i.day is null or i.start_at is null or i.end_at is null:
+                        class_non = True
+                        return_dict = {
+                            'web_title': '课程选择',
+                            'page_title': '课程选择',
+                            'request_user': req.user,
+                            'identity': identity,
+                            'class_non': class_non,
+                        }
+            if not class_non:
+                conflict_err = False
+                space_out = False
+                myclass_list = models.StuHasClass.objects.filter(Student=students)  # 加的判断冲突选课的
+                myclass = [["" for i in range(7)] for i in range(13)]
+                for i in range(0, len(myclass_list)):
+                    myclasstime = models.ClassHasRoom.objects.filter(Class=myclass_list[i].Class)
+                    for k in range(0, len(myclasstime)):
+                        myclassday = myclasstime[k].day - 1
+                        myclassstart = myclasstime[k].start_at - 1
+                        myclassdur = myclasstime[k].duration
+                        myclassname = myclasstime[k].Class.course.name
+                        for j in range(0, 12):
+                            if j in range(myclassstart, myclassstart + myclassdur):
+                                myclass[j][myclassday] = myclassname
+                myclasstime = models.ClassHasRoom.objects.filter(Class=classes)
                 for k in range(0, len(myclasstime)):
                     myclassday = myclasstime[k].day - 1
                     myclassstart = myclasstime[k].start_at - 1
@@ -556,38 +618,29 @@ def stu_select(req, null=None):
                     myclassname = myclasstime[k].Class.course.name
                     for j in range(0, 12):
                         if j in range(myclassstart, myclassstart + myclassdur):
-                            myclass[j][myclassday] = myclassname
-            myclasstime = models.ClassHasRoom.objects.filter(Class=classes)
-            for k in range(0, len(myclasstime)):
-                myclassday = myclasstime[k].day - 1
-                myclassstart = myclasstime[k].start_at - 1
-                myclassdur = myclasstime[k].duration
-                myclassname = myclasstime[k].Class.course.name
-                for j in range(0, 12):
-                    if j in range(myclassstart, myclassstart + myclassdur):
-                        if myclass[j][myclassday] != "":
-                            conflict_err = True
-                            break
-            if conflict_err == True:
-                return_dict = {
-                    'web_title': '课程选择',
-                    'page_title': '课程选择',
-                    'request_user': req.user,
-                    'conflict_err': conflict_err,
-                }
-            else:
-                if classes.course.capacity > classes.memberCnt:
-                    models.StuHasClass.objects.create(Student=students, Class=classes)
-                    classes.memberCnt += 1
-                    classes.save()
-                else:
-                    space_out = True
+                            if myclass[j][myclassday] != "":
+                                conflict_err = True
+                                break
+                if conflict_err == True:
                     return_dict = {
                         'web_title': '课程选择',
                         'page_title': '课程选择',
                         'request_user': req.user,
-                        'space_out': space_out,
+                        'conflict_err': conflict_err,
                     }
+                else:
+                    if classes.course.capacity > classes.memberCnt:
+                        models.StuHasClass.objects.create(Student=students, Class=classes)
+                        classes.memberCnt += 1
+                        classes.save()
+                    else:
+                        space_out = True
+                        return_dict = {
+                            'web_title': '课程选择',
+                            'page_title': '课程选择',
+                            'request_user': req.user,
+                            'space_out': space_out,
+                        }
         choice = req.session.get('choice')
         content = req.session.get('content')
         print(choice)

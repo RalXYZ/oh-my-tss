@@ -47,7 +47,7 @@
                         {%csrf_token%}
                         <input type="submit" class="operation-btn" name="{{ass.id}}" value="查看详情">
                     </form>
-                    <form>
+                    <form action="{%url 'homework_correct'%}" method="POST">
                         {%csrf_token%}
                         <input type="submit" class="operation-btn" name="{{ass.id}}" value="批改">
                     </form>

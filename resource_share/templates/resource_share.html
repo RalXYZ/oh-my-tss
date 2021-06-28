@@ -1,17 +1,5 @@
-{% extends 'skeleton.html' %} 
-
-{% load static %} 
-{% load material_form %} 
-
-{% block extra_head %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'info_mgt/css/info_mgt.css' %}"
-/>
-{% endblock extra_head %} 
-
-{% block card_content %}
+ {% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
 <div id="resource_share" class="card-content">
     <label style="font-size: 25px;">学期</label>
     <form action="#" method="post">
@@ -28,22 +16,59 @@
 
         </select>
     </form>
-    <table><thead>
-    <tr><th>课程号</th><th>课程名</th><th>上课时间</th><th>
-    </thead>
-    <tbody>
-        <tr>
+    <table>
+        <thead>
+            <tr>
+                <th>课程号</th>
+                <th>课程名</th>
+                <th>上课时间</th>
+                <th>
+        </thead>
+        <tbody>
+            {%for list in wlist%}
+            <tr>
+                <td>{{list.course_id}}</td>
+                <td>{{list.coursename}}</td>
+                <td>
+                    {%for times in list.time%} 周{{times.date}}{%for span in times.timespan%} {{span}}{%endfor%} 节 {%endfor%}
+                </td>
+                <td>
+                    <form action="{%url 'rsdetail'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="submit" name="{{list.Class_id}}" class="operation-btn" value="查看资源">
+                    </form>
+                </td>
+            </tr>
+            {%endfor%}
+            <!-- {%for res in class_resource%}
+            <tr>
+                <td>22120032</td>
+                <td>软件工程基础</td>
+                <td>周一678</td>
+                <td>
+                    <form action="{%url 'rsdetail'%}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" value="{{res}}" name="查看资源" class="operation-btn">
+                        查看资源
+                    </button>
+                    </form>
+                </td>
+            </tr>
+            {%endfor%} -->
+            <!-- <tr>
             <td>22120032</td>
             <td>软件工程基础</td>
             <td>周一678</td>
             <td>
-                <button class="operation-btn" onclick="window.location.href='resource_share_detail'">查看资源</button>
+                <form action="" method="POST">
+                    <button type="submit" value="查看资源" name="{{res1.Class_id}}" class="operation-btn" onclick="window.location.href='resource_share_detail'">查看资源</button>
+                </form>
             </td>
-        </tr>
-    </tbody>
+        </tr> -->
+        </tbody>
     </table>
 
     <!--div class="float-new-btn"></div-->
     <div class="table-foot-bar">上一页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 - 6, 共 1 页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下一页</div>
-    </div>
+</div>
 {% endblock card_content %}

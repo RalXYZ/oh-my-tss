@@ -1,44 +1,35 @@
-{% extends 'skeleton.html' %} 
-
-{% load static %} 
-{% load material_form %} 
-
-{% block extra_head %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'info_mgt/css/info_mgt.css' %}"
-/>
-{% endblock extra_head %} 
-
-{% block card_content %}
+ {% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
 <div id="homework_list" class="card-content">
-    <label style="font-size: 25px;">课程名称</label>
-    <table><thead>
-    <tr><th>作业标题</th><th>截止时间</th><th>当前状态</th><th>操作</th><th></tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>第一周作业</td>
-            <td>20210621 21:00</td>
-            <td>未提交</td>
-            <td>
-                <button class="operation-btn">查看详情</button>
-                <button class="operation-btn">提交</button>
-                <button class="operation-btn">成绩</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Project Final 提交</td>
-            <td>20210630 23:59</td>
-            <td>已提交</td>
-            <td>
-                <button class="operation-btn">查看详情</button>
-                <button class="operation-btn">提交</button>
-                <button class="operation-btn">成绩</button>
-            </td>
-        </tr>
-    </tbody>
+    <label style="font-size: 25px;">{{coursename}}
+    </label>
+    <table>
+        <thead>
+            <tr>
+                <th>作业标题</th>
+                <th>开始时间</th>
+                <th>截止时间</th>
+                <th>当前状态</th>
+                <th>操作</th>
+                <th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for info in infolist %}
+            <tr>
+                <td>{{info.name}}</td>
+                <td>{{info.start}}</td>
+                <td>{{info.end}}</td>
+                <td>{{info.ifsubmit}}</td>
+                <td>
+                    <form action="{%url 'hwdetail'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="submit" class="operation-btn" name="{{info.id}}" value="查看详情">
+                    </form>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
     </table>
 
-{% endblock card_content %}
+    {% endblock card_content %}

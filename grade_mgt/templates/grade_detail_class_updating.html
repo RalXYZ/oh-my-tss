@@ -1,111 +1,148 @@
-{% extends 'skeleton.html' %}
-
-{% load static %}
-{% load material_form %}
-
-{% block extra_head %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'info_mgt/css/info_mgt.css' %}"
-/>
-{% endblock extra_head %}
-
-{% block card_content %}
+{% extends 'skeleton.html' %} {% load static %} {% load material_form %} {% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'info_mgt/css/info_mgt.css' %}" /> {% endblock extra_head %} {% block card_content %}
 
 
 <style>
-
-.myinput :read-only{
-    border: 1px solid rgb(204, 204, 204); 
-    color:cyan;
-}
-.p3 {
-    float:left;
-    font-size: 14px;
-}
-
-.table1 {
-    border-collapse: collapse;
-    width: 100%;
-    height: 50px;
-}
-
-.table2{
-    border-collapse: collapse;
-    width: 100%;
-    height: 50px;
-}
-
-.table3{
-    border-collapse: collapse;
-    width: 100%;
-    height: 120px;
-    font-size: 14px;
-}
-
-th, td {
-    padding: 5px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    font-weight: bold;
-}
-.table3_tr:hover {background-color: #f5f5f5;}
-
+    .myinput :read-only {
+        border: 1px solid rgb(204, 204, 204);
+        color: cyan;
+    }
+    
+    .p3 {
+        float: left;
+        font-size: 14px;
+    }
+    
+    .table1 {
+        border-collapse: collapse;
+        width: 100%;
+        height: 50px;
+    }
+    
+    .table2 {
+        border-collapse: collapse;
+        width: 100%;
+        height: 50px;
+    }
+    
+    .table3 {
+        border-collapse: collapse;
+        width: 100%;
+        height: 120px;
+        font-size: 14px;
+    }
+    
+    th,
+    td {
+        padding: 5px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        font-weight: bold;
+    }
+    
+    .table3_tr:hover {
+        background-color: #f5f5f5;
+    }
 </style>
 
 <div class="card-content">
-    <h5>教学班成绩
-    <form action="#" method="POST">
-        <button onclick="window.location.href='grade_detail_class'"  title="取消" class="btn btn-default btn-sm" type="button" style="float: right;margin-right: 5px;">
-            取消
-        </button>
-        <!--if submit-->
-        <button onclick="window.location.href='grade_detail_class'"  title="保存成绩" class="btn btn-default btn-sm" type="button" style="float: right;margin-right: 5px;">
-            保存成绩
-        </button>
-        <!--else-->
-        <button onclick="window.location.href='grade_detail_class'"  title="提交修改成绩申请" class="btn btn-default btn-sm" type="button" style="float: right;margin-right: 5px;">
-            提交修改成绩申请
-        </button>
+    <script>
+        function valcheck(num){
+            fill();
+            var c=document.getElementById("c").value;
+            var reg = new RegExp("^(\\d|[1-9]\\d|100)$");
+            if(!num.match(reg)||!c.match(reg)){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        function fill(){
+            var a=document.getElementById("a").value
+            var b=document.getElementById("b").value
+            document.getElementById("c").value=parseInt(a)+parseInt(b);
+        }
+    </script>
+    <h5>教学班成绩          
+            
+            {%if is_submit%}
+            <form action="{%url 'change_submit'%}" method="POST">
+                {%csrf_token%}
+                <button onclick="window.location.href='grade_detail_class'" title="取消" class="btn btn-default btn-sm" type="button" style="float: right;margin-right: 5px;">
+                    取消</button> 
+            <input type="submit" value="提交修改成绩申请" class="btn btn-default btn-sm" style="float: right;margin-right: 5px;"> 
+            {%else%}
+            <form action="{%url 'grade_update'%}" method="POST">
+                {%csrf_token%}
+                <button onclick="window.location.href='grade_detail_class'" title="取消" class="btn btn-default btn-sm" type="button" style="float: right;margin-right: 5px;">
+                    取消</button> 
+            <input type="submit" value="保存成绩" class="btn btn-default btn-sm" style="float: right;margin-right: 5px;"> {%endif%}
     </h5>
 
-        <table class = "table1">
-            <tr>
-                <td><ul><li class="p3">课程学期：2021年春夏学期</li></ul></td>
-                <td><ul><li class="p3">课程名称：软件工程基础</li></ul></td>
-                
-            </tr>
-        </table>
-
-        <table class = "table2">
+    <table class="table1">
         <tr>
-            <td><ul><li class="p3">开课学院：计算机科学与技术学院</li></ul></td>
-            <td><ul><li class="p3">班级：周一678</li></ul></td>
+            <td>
+                <ul>
+                    <li class="p3">课程学期：{{classinfo.0.year}}年{{classinfo.0.term}}学期</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li class="p3">课程名称：{{courseinfo.0.name}}</li>
+                </ul>
+            </td>
+
         </tr>
-        </table>
+    </table>
 
-        <table class = "table3">
-            <tr>
-                <th>学号</th>
-                <th>姓名</th>
-                <th>专业</th>
-                <th>成绩</th>
-                <th>绩点</th>
-            </tr>
+    <table class="table2">
+        <tr>
+            <td>
+                <ul>
+                    <li class="p3">班级：{%for time in classtime%} 周{{time.date}} {%for span in time.timespan%} {{span}} {%endfor%} 节 {%endfor%}</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
 
-            <tr class = "table3_tr">
-                <td>3190102372</td>
-                <td>吉玉佳</td>
-                <td>软件工程</td>
-                <td><input type="text" value="95"></td>
-                <td>5</td>
-            </tr>
+    <table class="table3">
+        <tr>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>专业</th>
+            <th>平时成绩</th>
+            <th>期末考试成绩</th>
+            <th>总成绩</th>
+        </tr>
+        {%for stu in stuinfo%}
+        <tr class="table3_tr">
+            <td>{{stu.id}}</td>
+            <td>{{stu.name}}</td>
+            <td>{{stu.major}}</td>
+            <td><input id="a" type="text" value="{{stu.class_performance}}" name="classperformance_{{stu.id}}" required="required" maxlength="3" onkeyup="value=valcheck(value)?value:'',fill()"></td>
+            <td><input id="b" type="text" value="{{stu.exam_result}}" name="examresult_{{stu.id}}" required="required" maxlength="3" onkeyup="value=valcheck(value)?value:'',fill()"></td>
+            <td><input id="c" type="text" value="{{stu.grade}}" name="{{stu.id}}" required="required" maxlength="3"></td>
 
-        </table>
+            <!-- <td>{{stu.grade}}</td> -->
+            <!-- <td>{{stu.gp}}</td> -->
+        </tr>
+        {%endfor%}
+        <!-- <tr class="table3_tr">
+            <td>3190102372</td>
+            <td>吉玉佳</td>
+            <td>软件工程</td>
+            <td><input type="text" value="95"></td>
+            <td>5</td>
+        </tr> -->
+
+    </table></br>
+    {%if is_submit%}
+    <label style="font-size: 18px;font-weight: bold; color: #0097a7;">修改原因：</label>
+    <input type="text" name="reason" style="width: 100%;" required="required" maxlength="100">
+    {%endif%}
     </form>
 </div>
 
