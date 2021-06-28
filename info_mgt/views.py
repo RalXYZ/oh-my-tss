@@ -350,7 +350,7 @@ def account_add(req):
                 new_group = req.POST['role']
                 pass_word1 = req.POST['password']
                 pass_word2 = req.POST['password_again']
-                this_user = models.User.objects.get(username=new_username)
+                this_user = models.User.objects.filter(username=new_username)
                 if this_user:
                     return render(req, 'account_add.html', {
                         'web_title': '用户信息添加',
