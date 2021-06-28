@@ -234,7 +234,7 @@ def account_edit(req, username='#'):
                             'forms': SelfInfoForm(),
                             'edit': False,
                             'edit_result': True,
-                            'dup': True
+                            'dup': False
                         })
                 elif Teacher.objects.filter(user_id=this_user.id):
                     query_set = Teacher.objects.filter(user_id=this_user.id)
@@ -248,7 +248,7 @@ def account_edit(req, username='#'):
                             'forms': SelfInfoForm(),
                             'edit': False,
                             'edit_result': True,
-                            'dup': True
+                            'dup': False
                         })
                 else:
                     return render(req, 'account_edit.html', {
@@ -258,7 +258,7 @@ def account_edit(req, username='#'):
                         'forms': SelfInfoForm(),
                         'edit': False,
                         'edit_result': True,
-                        'dup': True
+                        'dup': False
                     })
 
                 try:
