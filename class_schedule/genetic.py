@@ -1,9 +1,7 @@
 import copy
+
 import numpy as np
 from numpy.random import rand
-
-from .models import Classroom
-from info_mgt.models import Class, Major, MajorHasCourse
 
 
 class Schedule:
