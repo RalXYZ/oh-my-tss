@@ -91,22 +91,22 @@ def info_edit(req, username='#'):
             if is_valid(req):
                 this_user = models.User.objects.get(username=username)
                 new_username = req.POST['username']
-                if new_username is None:
+                if new_username is None or len(new_username)==0:
                     new_username = this_user.username
                 new_last_name = req.POST['last_name']
-                if new_last_name is None:
+                if new_last_name is None or len(new_last_name)==0:
                     new_last_name = this_user.last_name
                 new_first_name = req.POST['first_name']
-                if new_first_name is None:
+                if new_first_name is None or len(new_first_name)==0:
                     new_first_name = this_user.first_name
                 new_email = req.POST['email']
-                if new_email is None:
+                if new_email is None or len(new_email)==0:
                     new_email = this_user.email
                 new_avatar = req.FILES.get('avatar')
 
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
-                this_user = models.User.objects.get(username=new_username)
+                this_user = models.User.objects.filter(username=new_username)
                 if this_user and new_username != username:
                     return render(req, 'info_edit.html', {
                         'web_title': '个人信息修改', 'page_title': '个人信息修改', 'request_user': req.user,
@@ -127,13 +127,13 @@ def info_edit(req, username='#'):
                         result2 = models.Avatar.objects.create(user=temp, avatar=new_avatar)
                     else:
                         result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
                 elif query is not None and new_avatar is not None:
                     result2 = query.update(avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
@@ -143,7 +143,7 @@ def info_edit(req, username='#'):
                     query_set = models.User.objects.filter(username=username)
                 else:
                     query_set = models.User.objects.filter(username=req.user.username)
-                if req.POST['password'] is not None:
+                if req.POST['password'] is not None and len(password1)!=0:
                     result = query_set.update(username=new_username, last_name=new_last_name,
                                               first_name=new_first_name, email=new_email, password=make_password(password1))
                 else:
@@ -192,23 +192,23 @@ def account_edit(req, username='#'):
             if is_valid(req):
                 this_user = models.User.objects.get(username=username)
                 new_username = req.POST['username']
-                if new_username is None:
+                if new_username is None or len(new_username)==0:
                     new_username = this_user.username
                 new_last_name = req.POST['last_name']
-                if new_last_name is None:
+                if new_last_name is None or len(new_last_name)==0:
                     new_last_name = this_user.last_name
                 new_first_name = req.POST['first_name']
-                if new_first_name is None:
+                if new_first_name is None or len(new_first_name)==0:
                     new_first_name = this_user.first_name
                 new_email = req.POST['email']
-                if new_email is None:
+                if new_email is None or len(new_email)==0:
                     new_email = this_user.email
                 new_avatar = req.FILES.get('avatar')
                 new_major = req.POST['major']
                 password1 = req.POST['password']
                 password2 = req.POST['password_again']
 
-                this_user = models.User.objects.get(username=new_username)
+                this_user = models.User.objects.filter(username=new_username)
                 if this_user and new_username != username:
                     return render(req, 'account_edit.html', {
                         'web_title': '用户信息修改',
@@ -229,7 +229,7 @@ def account_edit(req, username='#'):
                 if query is None and new_avatar is not None:
                     try:
                         result2 = models.Avatar.objects.create(user=req.user, avatar=new_avatar)
-                        f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                        f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                         for chunk in new_avatar.chunks():
                             f.write(chunk)
                         f.close()
@@ -238,7 +238,7 @@ def account_edit(req, username='#'):
                 elif query is not None and new_avatar is not None:
                     try:
                         result2 = query.update(avatar=new_avatar)
-                        f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                        f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                         for chunk in new_avatar.chunks():
                             f.write(chunk)
                         f.close()
@@ -247,7 +247,7 @@ def account_edit(req, username='#'):
 
                 result_2 = 1
                 if new_major is not None:
-                    this_user = models.User.objects.get(username=new_username)
+                    this_user = models.User.objects.get(username=username)
                     if Student.objects.get(user_id=this_user.id):
                         query_set = Student.objects.filter(user_id=this_user.id)
                         try:
@@ -264,7 +264,7 @@ def account_edit(req, username='#'):
                             pass
 
                 query_set = models.User.objects.filter(username=username)
-                if req.POST['password'] is not None:
+                if req.POST['password'] is not None and len(password1)!=0:
                     result_0 = query_set.update(username=new_username, last_name=new_last_name,
                                               first_name=new_first_name, email=new_email, password=make_password(password1))
                 else:
@@ -325,12 +325,12 @@ def account_add(req):
                     flag2 = True
             except:
                 flag2 = False
-        if req.POST['role'] == 'student':
-            query = models.Major.objects.get(name=req.POST['major'])
+        if req.POST['role'] == 'student' and len(req.POST['major'])!=0:
+            query = models.Major.objects.filter(name=req.POST['major'])
             if query is not None:
                 flag3 = True
-        elif req.POST['role'] == 'teacher':
-            query = models.Department.objects.get(name=req.POST['major'])
+        elif req.POST['role'] == 'teacher' and len(req.POST['major'])!=0:
+            query = models.Department.objects.filter(name=req.POST['major'])
             if query is not None:
                 flag3 = True
         if flag1 and flag2 and flag3:
@@ -350,7 +350,7 @@ def account_add(req):
                 new_group = req.POST['role']
                 pass_word1 = req.POST['password']
                 pass_word2 = req.POST['password_again']
-                this_user = models.User.objects.get(username=new_username)
+                this_user = models.User.objects.filter(username=new_username)
                 if this_user:
                     return render(req, 'account_add.html', {
                         'web_title': '用户信息添加',
@@ -387,13 +387,13 @@ def account_add(req):
                 query = models.Avatar.objects.filter(user=this_user)
                 if len(query) == 0 and new_avatar is not None and result_0:
                     result_2 = models.Avatar.objects.create(user=this_user, avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
                 elif new_avatar is not None and result_0:
                     result_2 = query.update(avatar=new_avatar)
-                    f = open(os.path.join(BASE_DIR, 'media', 'img', new_avatar.name), 'wb+')
+                    f = open(os.path.join(BASE_DIR, 'static', 'media', 'img', new_avatar.name), 'wb+')
                     for chunk in new_avatar.chunks():
                         f.write(chunk)
                     f.close()
