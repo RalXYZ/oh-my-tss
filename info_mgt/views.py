@@ -91,16 +91,16 @@ def info_edit(req, username='#'):
             if is_valid(req):
                 this_user = models.User.objects.get(username=username)
                 new_username = req.POST['username']
-                if new_username is None:
+                if new_username is None or len(new_username)==0:
                     new_username = this_user.username
                 new_last_name = req.POST['last_name']
-                if new_last_name is None:
+                if new_last_name is None or len(new_last_name)==0:
                     new_last_name = this_user.last_name
                 new_first_name = req.POST['first_name']
-                if new_first_name is None:
+                if new_first_name is None or len(new_first_name)==0:
                     new_first_name = this_user.first_name
                 new_email = req.POST['email']
-                if new_email is None:
+                if new_email is None or len(new_email)==0:
                     new_email = this_user.email
                 new_avatar = req.FILES.get('avatar')
 
@@ -143,7 +143,7 @@ def info_edit(req, username='#'):
                     query_set = models.User.objects.filter(username=username)
                 else:
                     query_set = models.User.objects.filter(username=req.user.username)
-                if req.POST['password'] is not None:
+                if req.POST['password'] is not None and len(password1)!=0:
                     result = query_set.update(username=new_username, last_name=new_last_name,
                                               first_name=new_first_name, email=new_email, password=make_password(password1))
                 else:
@@ -192,16 +192,16 @@ def account_edit(req, username='#'):
             if is_valid(req):
                 this_user = models.User.objects.get(username=username)
                 new_username = req.POST['username']
-                if new_username is None:
+                if new_username is None or len(new_username)==0:
                     new_username = this_user.username
                 new_last_name = req.POST['last_name']
-                if new_last_name is None:
+                if new_last_name is None or len(new_last_name)==0:
                     new_last_name = this_user.last_name
                 new_first_name = req.POST['first_name']
-                if new_first_name is None:
+                if new_first_name is None or len(new_first_name)==0:
                     new_first_name = this_user.first_name
                 new_email = req.POST['email']
-                if new_email is None:
+                if new_email is None or len(new_email)==0:
                     new_email = this_user.email
                 new_avatar = req.FILES.get('avatar')
                 new_major = req.POST['major']
@@ -264,7 +264,7 @@ def account_edit(req, username='#'):
                             pass
 
                 query_set = models.User.objects.filter(username=username)
-                if req.POST['password'] is not None:
+                if req.POST['password'] is not None and len(password1)!=0:
                     result_0 = query_set.update(username=new_username, last_name=new_last_name,
                                               first_name=new_first_name, email=new_email, password=make_password(password1))
                 else:
