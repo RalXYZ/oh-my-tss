@@ -661,7 +661,7 @@ def hwlist(request):
     count = 0
     for ass in asslist:
         if submit:
-            if submit[ass['id']]:
+            if submit[ass['id']]==True:
                 ifsubmit = "已提交"
             else:
                 ifsubmit = "未提交"
