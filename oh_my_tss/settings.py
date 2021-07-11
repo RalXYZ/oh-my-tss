@@ -85,7 +85,8 @@ WSGI_APPLICATION = 'oh_my_tss.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+# This database has been dropped already
+# Do not waste your time on trying to connect to this database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
